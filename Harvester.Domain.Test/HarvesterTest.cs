@@ -10,6 +10,8 @@ namespace Harvester.Domain.Test
     [TestFixture]
     public class HarvesterTest
     {
+        private const string BLANK = " ";
+
         [TestCase(3, 4, "1 2 3 4 8 7 6 5 9 10 11 12")]
         public void Level_1_spec_examples(int rows, int cols, string expected)
         {
@@ -17,7 +19,7 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        private string Harvest(int rows, int cols)
+        private static string Harvest(int rows, int cols)
         {
             var allRows = new List<List<int>>();
 
@@ -26,21 +28,35 @@ namespace Harvester.Domain.Test
             {
                 var row = new List<int>();
 
-                for (var j = 1 + inc; j <= cols + inc; j++)
-                    row.Add(j);
+                for (var plot = 1 + inc; plot <= cols + inc; plot++)
+                    row.Add(plot);
 
                 allRows.Add(row);
                 inc += cols;
             }
 
-            for (var i = 0; i < allRows.Count; i++)
-            {
-                if (i%2 == 1)
-                    allRows[i].Reverse();
-            }
+            ReverseEverySecondRow(allRows);
+            return ConvertPlotsToString(allRows);
+        }
 
-            var allRowsAsString = allRows.Select(r => string.Join(" ", r)).ToList();
-            return string.Join(" ", allRowsAsString);
+        private static void ReverseEverySecondRow(List<List<int>> allRows)
+        {
+            for (var rowIndex = 0; rowIndex < allRows.Count; rowIndex++)
+            {
+                if (isMultipleOfTwo(rowIndex))
+                    allRows[rowIndex].Reverse();
+            }
+        }
+
+        private static bool isMultipleOfTwo(int i)
+        {
+            return i%2 == 1;
+        }
+
+        private static string ConvertPlotsToString(IEnumerable<List<int>> allRows)
+        {
+            var allRowsAsString = allRows.Select(r => string.Join(BLANK, r)).ToList();
+            return string.Join(BLANK, allRowsAsString);
         }
     }
 }
