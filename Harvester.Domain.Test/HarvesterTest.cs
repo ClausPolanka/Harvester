@@ -57,7 +57,7 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        [TestCase(3, 4, 1, 1, "S", "")]
+        [TestCase(3, 4, 1, 1, "S", "1 5 9 10 6 2 3 7 11 12 8 4")]
         public void Level_3_spec_examples(
             int rows,
             int cols,
