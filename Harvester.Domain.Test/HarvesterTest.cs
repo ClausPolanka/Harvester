@@ -20,7 +20,7 @@ namespace Harvester.Domain.Test
             )]
         public void Level_1_spec_examples_also_level_1_inputs(int rows, int cols, string expected)
         {
-            var actual = Harvest(rows, cols, startRow: 1, startCols: 1);
+            var actual = Harvest(rows, cols, startRow: 1, startCol: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -36,7 +36,23 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        private string Harvest(int rows, int cols, int startRow, int startCols)
+        private string Harvest(int rows, int cols, int startRow, int startCol)
+        {
+            var plotRows = CreatePlotrows(rows, cols);
+
+            if (startRow == 1 && startCol == 1)
+            {
+                ReverseRowWithEvenRowIndex(plotRows);
+                return ConvertPlotsToString(plotRows);
+            }
+            else
+            {
+                ReverseRowWithOddRowIndex(plotRows);
+                return ConvertPlotsToStringStartingAtSpecificRow(plotRows, startRow);
+            }
+        }
+
+        private static List<List<int>> CreatePlotrows(int rows, int cols)
         {
             var allRows = new List<List<int>>();
 
@@ -51,21 +67,33 @@ namespace Harvester.Domain.Test
                 allRows.Add(row);
                 inc += cols;
             }
-
-            ReverseEverySecondRow(allRows);
-            return ConvertPlotsToString(allRows);
+            return allRows;
         }
 
-        private static void ReverseEverySecondRow(List<List<int>> allRows)
+        private static void ReverseRowWithEvenRowIndex(List<List<int>> allRows)
         {
             for (var rowIndex = 0; rowIndex < allRows.Count; rowIndex++)
             {
-                if (isMultipleOfTwo(rowIndex))
+                if (isEven(rowIndex))
                     allRows[rowIndex].Reverse();
             }
         }
 
-        private static bool isMultipleOfTwo(int i)
+        private static void ReverseRowWithOddRowIndex(List<List<int>> allRows)
+        {
+            for (var rowIndex = 0; rowIndex < allRows.Count; rowIndex++)
+            {
+                if (IsOdd(rowIndex))
+                    allRows[rowIndex].Reverse();
+            }
+        }
+
+        private static bool IsOdd(int rowIndex)
+        {
+            return rowIndex%2 == 0;
+        }
+
+        private static bool isEven(int i)
         {
             return i%2 == 1;
         }
@@ -73,6 +101,15 @@ namespace Harvester.Domain.Test
         private static string ConvertPlotsToString(IEnumerable<List<int>> allRows)
         {
             var allRowsAsString = allRows.Select(r => string.Join(BLANK, r)).ToList();
+            return string.Join(BLANK, allRowsAsString);
+        }
+
+        private static string ConvertPlotsToStringStartingAtSpecificRow(IEnumerable<List<int>> allRows, int startRow)
+        {
+            var allRowsAsString = allRows.Select(r => string.Join(BLANK, r)).ToList();
+
+            allRowsAsString.Reverse();
+
             return string.Join(BLANK, allRowsAsString);
         }
     }
