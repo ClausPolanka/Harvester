@@ -19,7 +19,28 @@ namespace Harvester.Domain.Test
 
         private string Harvest(int rows, int cols)
         {
-            return "";
+            var allRows = new List<List<int>>();
+
+            var inc = 0;
+            for (var i = 0; i < rows; i++)
+            {
+                var row = new List<int>();
+
+                for (var j = 1 + inc; j <= cols + inc; j++)
+                    row.Add(j);
+
+                allRows.Add(row);
+                inc += cols;
+            }
+
+            for (var i = 0; i < allRows.Count; i++)
+            {
+                if (i%2 == 1)
+                    allRows[i].Reverse();
+            }
+
+            var allRowsAsString = allRows.Select(r => string.Join(" ", r)).ToList();
+            return string.Join(" ", allRowsAsString);
         }
     }
 }
