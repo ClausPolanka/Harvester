@@ -31,10 +31,10 @@ namespace Harvester.Domain.Test
             int rows,
             int cols,
             int startRow,
-            int startCols,
+            int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCols);
+            var actual = Harvest(rows, cols, startRow, startCol);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -42,7 +42,12 @@ namespace Harvester.Domain.Test
         {
             var plotRows = CreatePlotrows(rows, cols);
 
-            if (startRow == 1 && startCol == 1)
+            if (startRow == 1 && startCol == plotRows[0].Count)
+            {
+                ReverseRowWithOddRowIndex(plotRows);;
+                return ConvertPlotsToString(plotRows);
+            } 
+            else if (startRow == 1 && startCol == 1)
             {
                 ReverseRowWithEvenRowIndex(plotRows);
                 return ConvertPlotsToString(plotRows);
