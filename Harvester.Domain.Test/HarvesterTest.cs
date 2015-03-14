@@ -20,7 +20,7 @@ namespace Harvester.Domain.Test
             )]
         public void Level_1_spec_examples_also_level_1_inputs(int rows, int cols, string expected)
         {
-            var actual = Harvest(rows, cols, startRow: 1, startCol: 1);
+            var actual = Harvest(rows, cols, startRow: 1, startCol: 1, direction: "");
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -36,7 +36,7 @@ namespace Harvester.Domain.Test
             int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol);
+            var actual = Harvest(rows, cols, startRow, startCol, direction: "");
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -53,18 +53,30 @@ namespace Harvester.Domain.Test
             int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol);
+            var actual = Harvest(rows, cols, startRow, startCol, direction: "");
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        private string Harvest(int rows, int cols, int startRow, int startCol)
+        [TestCase(3, 4, 1, 1, "S", "")]
+        public void Level_3_spec_examples(
+            int rows,
+            int cols,
+            int startRow,
+            int startCol,
+            string direction,
+            string expected)
         {
-            var plotRows = CreatePlotrows(rows, cols);
+            var actual = Harvest(rows, cols, startRow, startCol, direction);
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        private string Harvest(int rows, int cols, int startRow, int startCol, string direction)
+        {
+            var plotRows = CreatePlotrows(rows, cols, direction);
 
             if (startRow == 1 && startCol == plotRows[0].Count)
             {
                 ReverseRowWithOddRowIndex(plotRows);
-                ;
                 return ConvertPlotsToString(plotRows);
             }
             else if (startRow == 1 && startCol == 1)
@@ -79,7 +91,7 @@ namespace Harvester.Domain.Test
             }
         }
 
-        private static List<List<int>> CreatePlotrows(int rows, int cols)
+        private static List<List<int>> CreatePlotrows(int rows, int cols, string direction)
         {
             var allRows = new List<List<int>>();
 
@@ -94,6 +106,17 @@ namespace Harvester.Domain.Test
                 allRows.Add(row);
                 inc += cols;
             }
+
+            if (direction == "N" || direction == "S")
+            {
+                var newPlotRows = new List<List<int>>();
+
+                for (var i = 0; i < cols; i++)
+                    newPlotRows.Add(allRows.Select(pr => pr[i]).ToList());
+
+                return newPlotRows;
+            }
+
             return allRows;
         }
 
