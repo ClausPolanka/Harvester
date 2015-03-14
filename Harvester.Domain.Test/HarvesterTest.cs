@@ -13,7 +13,7 @@ namespace Harvester.Domain.Test
         private const string BLANK = " ";
 
         [TestCase(3, 4, "1 2 3 4 8 7 6 5 9 10 11 12")]
-        [TestCase(5, 2, "")]
+        [TestCase(5, 2, "1 2 4 3 5 6 8 7 9 10")]
         public void Level_1_spec_examples(int rows, int cols, string expected)
         {
             var actual = Harvest(rows, cols);
