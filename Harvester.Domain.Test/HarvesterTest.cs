@@ -14,7 +14,7 @@ namespace Harvester.Domain.Test
 
         [TestCase(3, 4, "1 2 3 4 8 7 6 5 9 10 11 12")]
         [TestCase(5, 2, "1 2 4 3 5 6 8 7 9 10")]
-        [TestCase(2, 5, "")]
+        [TestCase(2, 5, "1 2 3 4 5 10 9 8 7 6")]
         public void Level_1_spec_examples(int rows, int cols, string expected)
         {
             var actual = Harvest(rows, cols);
