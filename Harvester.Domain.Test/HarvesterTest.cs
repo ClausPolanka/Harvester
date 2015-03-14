@@ -58,6 +58,7 @@ namespace Harvester.Domain.Test
         }
 
         [TestCase(3, 4, 1, 1, "S", "1 5 9 10 6 2 3 7 11 12 8 4")]
+        [TestCase(5, 2, 5, 2, "N", "")]
         public void Level_3_spec_examples(
             int rows,
             int cols,
