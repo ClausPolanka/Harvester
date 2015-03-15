@@ -153,7 +153,6 @@ namespace Harvester.Domain.Test
                     }
 
                     plotRows = indexPlots.OrderBy(key => key.Key).ToDictionary((keyItem) => keyItem.Key, (valItem) => valItem.Value).Values.ToList();
-
                     return ConvertPlotsToString(plotRows);
 
                 }
