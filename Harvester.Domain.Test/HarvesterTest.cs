@@ -131,30 +131,9 @@ namespace Harvester.Domain.Test
                 }
                 else if (startRow == plotRows.Count && startCol == 1) // ==>
                 {
-                    var reverse = plotRows.Count/2;
-
-                    for (var i = 0; i < reverse; i++)
-                        plotRows[i].Reverse();
-
-                    var indexPlots = new Dictionary<int, List<int>>();
-
-                    var even = 2;
-                    for (var i = 0; i < reverse; i++)
-                    {
-                        indexPlots.Add(even, plotRows[i]);
-                        even *= 2;
-                    }
-
-                    var odd = 1;
-                    for (var i = plotRows.Count; i > Math.Ceiling(plotRows.Count/2.0); i--)
-                    {
-                        indexPlots.Add(odd, plotRows[i - 1]);
-                        odd = odd*2 + 1;
-                    }
-
-                    plotRows = indexPlots.OrderBy(key => key.Key).ToDictionary((keyItem) => keyItem.Key, (valItem) => valItem.Value).Values.ToList();
-                    return ConvertPlotsToString(plotRows);
-
+                    var indexPlots = CreateIndexedPlotRowsForCircularHarvesting(plotRows);
+                    var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
+                    return ConvertPlotsToString(newPlotRows);
                 }
                 else if (startRow == plotRows.Count && startCol == plotRows[0].Count) // <==
                 {
@@ -186,6 +165,40 @@ namespace Harvester.Domain.Test
                 ReverseRowWithOddRowIndex(plotRows);
                 return ConvertPlotsToStringStartingAtSpecificRow(plotRows, startRow);
             }
+        }
+
+        private static List<List<int>> SortByKeyAndExtractPlotRows(Dictionary<int, List<int>> indexPlots)
+        {
+            return indexPlots
+                .OrderBy(key => key.Key)
+                .ToDictionary(keyItem => keyItem.Key, valItem => valItem.Value)
+                .Values
+                .ToList();
+        }
+
+        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvesting(List<List<int>> plotRows)
+        {
+            var reverse = plotRows.Count/2;
+
+            for (var i = 0; i < reverse; i++)
+                plotRows[i].Reverse();
+
+            var indexPlots = new Dictionary<int, List<int>>();
+
+            var even = 2;
+            for (var i = 0; i < reverse; i++)
+            {
+                indexPlots.Add(even, plotRows[i]);
+                even *= 2;
+            }
+
+            var odd = 1;
+            for (var i = plotRows.Count; i > Math.Ceiling(plotRows.Count/2.0); i--)
+            {
+                indexPlots.Add(odd, plotRows[i - 1]);
+                odd = odd*2 + 1;
+            }
+            return indexPlots;
         }
 
         private static List<List<int>> CreatePlotrows(int rows, int cols, string direction)
