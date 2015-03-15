@@ -115,7 +115,9 @@ namespace Harvester.Domain.Test
         [TestCase(2, 5, 2, 1, NORTH, SERPENTINE, "6 1 2 7 8 3 4 9 10 5")]
         [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9")]
         [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9")]
-        [TestCase(23, 12, 23, 1, NORTH, CIRCULAR, "265 253 241 229 217 205 193 181 169 157 145 133 121 109 97 85 73 61 49 37 25 13 1 12 24 36 48 60 72 84 96 108 120 132 144 156 168 180 192 204 216 228 240 252 264 276 266 254 242 230 218 206 194 182 170 158 146 134 122 110 98 86 74 62 50 38 26 14 2 11 23 35 47 59 71 83 95 107 119 131 143 155 167 179 191 203 215 227 239 251 263 275 267 255 243 231 219 207 195 183 171 159 147 135 123 111 99 87 75 63 51 39 27 15 3 10 22 34 46 58 70 82 94 106 118 130 142 154 166 178 190 202 214 226 238 250 262 274 268 256 244 232 220 208 196 184 172 160 148 136 124 112 100 88 76 64 52 40 28 16 4 9 21 33 45 57 69 81 93 105 117 129 141 153 165 177 189 201 213 225 237 249 261 273 269 257 245 233 221 209 197 185 173 161 149 137 125 113 101 89 77 65 53 41 29 17 5 8 20 32 44 56 68 80 92 104 116 128 140 152 164 176 188 200 212 224 236 248 260 272 270 258 246 234 222 210 198 186 174 162 150 138 126 114 102 90 78 66 54 42 30 18 6 7 19 31 43 55 67 79 91 103 115 127 139 151 163 175 187 199 211 223 235 247 259 271")]
+        [TestCase(23, 12, 23, 1, NORTH, CIRCULAR,
+            "265 253 241 229 217 205 193 181 169 157 145 133 121 109 97 85 73 61 49 37 25 13 1 12 24 36 48 60 72 84 96 108 120 132 144 156 168 180 192 204 216 228 240 252 264 276 266 254 242 230 218 206 194 182 170 158 146 134 122 110 98 86 74 62 50 38 26 14 2 11 23 35 47 59 71 83 95 107 119 131 143 155 167 179 191 203 215 227 239 251 263 275 267 255 243 231 219 207 195 183 171 159 147 135 123 111 99 87 75 63 51 39 27 15 3 10 22 34 46 58 70 82 94 106 118 130 142 154 166 178 190 202 214 226 238 250 262 274 268 256 244 232 220 208 196 184 172 160 148 136 124 112 100 88 76 64 52 40 28 16 4 9 21 33 45 57 69 81 93 105 117 129 141 153 165 177 189 201 213 225 237 249 261 273 269 257 245 233 221 209 197 185 173 161 149 137 125 113 101 89 77 65 53 41 29 17 5 8 20 32 44 56 68 80 92 104 116 128 140 152 164 176 188 200 212 224 236 248 260 272 270 258 246 234 222 210 198 186 174 162 150 138 126 114 102 90 78 66 54 42 30 18 6 7 19 31 43 55 67 79 91 103 115 127 139 151 163 175 187 199 211 223 235 247 259 271"
+            )]
         public void Level_4_input(
             int rows,
             int cols,
@@ -142,31 +144,31 @@ namespace Harvester.Domain.Test
 
             if (mode == CIRCULAR)
             {
-                if (startRow == 1 && startCol == 1) // ==>
-                {
-                }
-                else if (startRow == 1 && startCol == plotRows[0].Count) // <==
+                if (startRow == 1 && startCol == 1)
                 {
                     plotRows.Reverse();
-
-                    var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(plotRows);
-                    var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
-                    return ConvertPlotsToString(newPlotRows);
+                    return CircularFromLeftToRight(plotRows);
                 }
-                else if (startRow == plotRows.Count && startCol == 1) // ==>
+                else if (startRow == 1 && startCol == plotRows[0].Count)
                 {
-                    var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromLeftToRight(plotRows);
-                    var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
-                    return ConvertPlotsToString(newPlotRows);
+                    plotRows.Reverse();
+                    return CircularFromRightToLeft(plotRows);
                 }
-                else if (startRow == plotRows.Count && startCol == plotRows[0].Count) // <==
+                else if (startRow == plotRows.Count && startCol == 1)
                 {
-                    var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(plotRows);
-                    var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
-                    return ConvertPlotsToString(newPlotRows);
+                    return CircularFromLeftToRight(plotRows);
+                }
+                else if (startRow == plotRows.Count && startCol == plotRows[0].Count)
+                {
+                    return CircularFromRightToLeft(plotRows);
                 }
             }
 
+            return SerpentineHarvested(startRow, startCol, plotRows);
+        }
+
+        private static string SerpentineHarvested(int startRow, int startCol, List<List<int>> plotRows)
+        {
             if ((startRow%2 == 0) && startCol == plotRows[0].Count)
             {
                 ReverseRowWithEvenRowIndex(plotRows);
@@ -194,6 +196,20 @@ namespace Harvester.Domain.Test
             }
         }
 
+        private static string CircularFromLeftToRight(List<List<int>> plotRows)
+        {
+            var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromLeftToRight(plotRows);
+            var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
+            return ConvertPlotsToString(newPlotRows);
+        }
+
+        private static string CircularFromRightToLeft(List<List<int>> plotRows)
+        {
+            var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(plotRows);
+            var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
+            return ConvertPlotsToString(newPlotRows);
+        }
+
         private static List<List<int>> SortByKeyAndExtractPlotRows(Dictionary<int, List<int>> indexPlots)
         {
             return indexPlots
@@ -203,24 +219,24 @@ namespace Harvester.Domain.Test
                 .ToList();
         }
 
-        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvestingFromLeftToRight(List<List<int>> plotRows)
+        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvestingFromLeftToRight(
+            List<List<int>> plotRows)
         {
             var reverse = plotRows.Count/2;
 
             for (var i = 0; i < reverse; i++)
                 plotRows[i].Reverse();
 
-           return CreateIndexedPlotRows(plotRows, reverse);
+            return CreateIndexedPlotRows(plotRows, reverse);
         }
 
-        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(List<List<int>> plotRows)
+        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(
+            List<List<int>> plotRows)
         {
             var reverse = Math.Ceiling(plotRows.Count/2.0);
 
             for (var i = plotRows.Count; i > reverse; i--)
-            {
-                plotRows[i-1].Reverse();
-            }
+                plotRows[i - 1].Reverse();
 
             return CreateIndexedPlotRows(plotRows, reverse: plotRows.Count/2);
         }
