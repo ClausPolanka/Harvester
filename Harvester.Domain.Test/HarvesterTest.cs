@@ -97,6 +97,7 @@ namespace Harvester.Domain.Test
         }
 
         [TestCase(3, 4, 1, 4, SOUTH, CIRCULAR, "4 8 12 9 5 1 3 7 11 10 6 2")]
+        [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9 ")]
         public void Level_4_spec_examples(
             int rows,
             int cols,
@@ -131,12 +132,15 @@ namespace Harvester.Domain.Test
                 }
                 else if (startRow == plotRows.Count && startCol == 1) // ==>
                 {
-                    var indexPlots = CreateIndexedPlotRowsForCircularHarvesting(plotRows);
+                    var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromLeftToRight(plotRows);
                     var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
                     return ConvertPlotsToString(newPlotRows);
                 }
                 else if (startRow == plotRows.Count && startCol == plotRows[0].Count) // <==
                 {
+                    var indexPlots = CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(plotRows);
+                    var newPlotRows = SortByKeyAndExtractPlotRows(indexPlots);
+                    return ConvertPlotsToString(newPlotRows);
                 }
             }
 
@@ -176,13 +180,30 @@ namespace Harvester.Domain.Test
                 .ToList();
         }
 
-        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvesting(List<List<int>> plotRows)
+        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvestingFromLeftToRight(List<List<int>> plotRows)
         {
             var reverse = plotRows.Count/2;
 
             for (var i = 0; i < reverse; i++)
                 plotRows[i].Reverse();
 
+           return CreateIndexedPlotRows(plotRows, reverse);
+        }
+
+        private static Dictionary<int, List<int>> CreateIndexedPlotRowsForCircularHarvestingFromRightToLeft(List<List<int>> plotRows)
+        {
+            var reverse = Math.Ceiling(plotRows.Count/2.0);
+
+            for (var i = plotRows.Count; i > reverse; i--)
+            {
+                plotRows[i-1].Reverse();
+            }
+
+            return CreateIndexedPlotRows(plotRows, reverse: plotRows.Count/2);
+        }
+
+        private static Dictionary<int, List<int>> CreateIndexedPlotRows(List<List<int>> plotRows, double reverse)
+        {
             var indexPlots = new Dictionary<int, List<int>>();
 
             var even = 2;
@@ -198,6 +219,7 @@ namespace Harvester.Domain.Test
                 indexPlots.Add(odd, plotRows[i - 1]);
                 odd = odd*2 + 1;
             }
+
             return indexPlots;
         }
 
