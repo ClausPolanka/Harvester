@@ -12,6 +12,7 @@ namespace Harvester.Domain.Test
     {
         private const string BLANK = " ";
         private const string SERPENTINE = "S";
+        private const string CIRCULAR = "Z";
         private const string SOUTH = "S";
         private const string NORTH = "N";
 
@@ -94,8 +95,8 @@ namespace Harvester.Domain.Test
             var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
-        
-        [TestCase(3, 4, 1, 4, SOUTH, "Z", "4 8 12 9 5 1 3 7 11 10 6 2")]
+
+        [TestCase(3, 4, 1, 4, SOUTH, CIRCULAR, "4 8 12 9 5 1 3 7 11 10 6 2")]
         public void Level_4_spec_examples(
             int rows,
             int cols,
@@ -120,6 +121,47 @@ namespace Harvester.Domain.Test
                 startCol = tmpRow;
             }
 
+            if (mode == CIRCULAR)
+            {
+                if (startRow == 1 && startCol == 1) // ==>
+                {
+                }
+                else if (startRow == 1 && startCol == plotRows[0].Count) // <==
+                {
+                }
+                else if (startRow == plotRows.Count && startCol == 1) // ==>
+                {
+                    var reverse = plotRows.Count/2;
+
+                    for (var i = 0; i < reverse; i++)
+                        plotRows[i].Reverse();
+
+                    var indexPlots = new Dictionary<int, List<int>>();
+
+                    var even = 2;
+                    for (var i = 0; i < reverse; i++)
+                    {
+                        indexPlots.Add(even, plotRows[i]);
+                        even *= 2;
+                    }
+
+                    var odd = 1;
+                    for (var i = plotRows.Count; i > Math.Ceiling(plotRows.Count/2.0); i--)
+                    {
+                        indexPlots.Add(odd, plotRows[i - 1]);
+                        odd = odd*2 + 1;
+                    }
+
+                    plotRows = indexPlots.OrderBy(key => key.Key).ToDictionary((keyItem) => keyItem.Key, (valItem) => valItem.Value).Values.ToList();
+
+                    return ConvertPlotsToString(plotRows);
+
+                }
+                else if (startRow == plotRows.Count && startCol == plotRows[0].Count) // <==
+                {
+                }
+            }
+
             if ((startRow%2 == 0) && startCol == plotRows[0].Count)
             {
                 ReverseRowWithEvenRowIndex(plotRows);
@@ -140,7 +182,7 @@ namespace Harvester.Domain.Test
                 ReverseRowWithEvenRowIndex(plotRows);
                 return ConvertPlotsToString(plotRows);
             }
-            else // ((startRow%2 == 1) && startCol == plotRows[0].Count)
+            else
             {
                 ReverseRowWithOddRowIndex(plotRows);
                 return ConvertPlotsToStringStartingAtSpecificRow(plotRows, startRow);
