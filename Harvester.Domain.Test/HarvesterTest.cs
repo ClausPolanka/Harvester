@@ -11,6 +11,9 @@ namespace Harvester.Domain.Test
     public class HarvesterTest
     {
         private const string BLANK = " ";
+        private const string SERPENTINE = "S";
+        private const string SOUTH = "S";
+        private const string NORTH = "N";
 
         [TestCase(3, 4, "1 2 3 4 8 7 6 5 9 10 11 12")]
         [TestCase(2, 5, "1 2 3 4 5 10 9 8 7 6")]
@@ -20,7 +23,7 @@ namespace Harvester.Domain.Test
             )]
         public void Level_1_spec_examples_also_level_1_inputs(int rows, int cols, string expected)
         {
-            var actual = Harvest(rows, cols, startRow: 1, startCol: 1, direction: "");
+            var actual = Harvest(rows, cols, startRow: 1, startCol: 1, direction: "", mode: SERPENTINE);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -36,7 +39,7 @@ namespace Harvester.Domain.Test
             int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction: "");
+            var actual = Harvest(rows, cols, startRow, startCol, direction: "", mode: SERPENTINE);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -53,13 +56,13 @@ namespace Harvester.Domain.Test
             int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction: "");
+            var actual = Harvest(rows, cols, startRow, startCol, direction: "", mode: SERPENTINE);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        [TestCase(3, 4, 1, 1, "S", "1 5 9 10 6 2 3 7 11 12 8 4")]
-        [TestCase(5, 2, 5, 2, "N", "10 8 6 4 2 1 3 5 7 9")]
-        [TestCase(23, 12, 23, 1, "N",
+        [TestCase(3, 4, 1, 1, SOUTH, "1 5 9 10 6 2 3 7 11 12 8 4")]
+        [TestCase(5, 2, 5, 2, NORTH, "10 8 6 4 2 1 3 5 7 9")]
+        [TestCase(23, 12, 23, 1, NORTH,
             "265 253 241 229 217 205 193 181 169 157 145 133 121 109 97 85 73 61 49 37 25 13 1 2 14 26 38 50 62 74 86 98 110 122 134 146 158 170 182 194 206 218 230 242 254 266 267 255 243 231 219 207 195 183 171 159 147 135 123 111 99 87 75 63 51 39 27 15 3 4 16 28 40 52 64 76 88 100 112 124 136 148 160 172 184 196 208 220 232 244 256 268 269 257 245 233 221 209 197 185 173 161 149 137 125 113 101 89 77 65 53 41 29 17 5 6 18 30 42 54 66 78 90 102 114 126 138 150 162 174 186 198 210 222 234 246 258 270 271 259 247 235 223 211 199 187 175 163 151 139 127 115 103 91 79 67 55 43 31 19 7 8 20 32 44 56 68 80 92 104 116 128 140 152 164 176 188 200 212 224 236 248 260 272 273 261 249 237 225 213 201 189 177 165 153 141 129 117 105 93 81 69 57 45 33 21 9 10 22 34 46 58 70 82 94 106 118 130 142 154 166 178 190 202 214 226 238 250 262 274 275 263 251 239 227 215 203 191 179 167 155 143 131 119 107 95 83 71 59 47 35 23 11 12 24 36 48 60 72 84 96 108 120 132 144 156 168 180 192 204 216 228 240 252 264 276"
             )]
         public void Level_3_spec_examples(
@@ -70,14 +73,14 @@ namespace Harvester.Domain.Test
             string direction,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        [TestCase(3, 4, 1, 1, "S", "1 5 9 10 6 2 3 7 11 12 8 4")]
-        [TestCase(2, 5, 1, 5, "S", "5 10 9 4 3 8 7 2 1 6")]
-        [TestCase(5, 2, 5, 2, "N", "10 8 6 4 2 1 3 5 7 9")]
-        [TestCase(23, 12, 23, 1, "N",
+        [TestCase(3, 4, 1, 1, SOUTH, "1 5 9 10 6 2 3 7 11 12 8 4")]
+        [TestCase(2, 5, 1, 5, SOUTH, "5 10 9 4 3 8 7 2 1 6")]
+        [TestCase(5, 2, 5, 2, NORTH, "10 8 6 4 2 1 3 5 7 9")]
+        [TestCase(23, 12, 23, 1, NORTH,
             "265 253 241 229 217 205 193 181 169 157 145 133 121 109 97 85 73 61 49 37 25 13 1 2 14 26 38 50 62 74 86 98 110 122 134 146 158 170 182 194 206 218 230 242 254 266 267 255 243 231 219 207 195 183 171 159 147 135 123 111 99 87 75 63 51 39 27 15 3 4 16 28 40 52 64 76 88 100 112 124 136 148 160 172 184 196 208 220 232 244 256 268 269 257 245 233 221 209 197 185 173 161 149 137 125 113 101 89 77 65 53 41 29 17 5 6 18 30 42 54 66 78 90 102 114 126 138 150 162 174 186 198 210 222 234 246 258 270 271 259 247 235 223 211 199 187 175 163 151 139 127 115 103 91 79 67 55 43 31 19 7 8 20 32 44 56 68 80 92 104 116 128 140 152 164 176 188 200 212 224 236 248 260 272 273 261 249 237 225 213 201 189 177 165 153 141 129 117 105 93 81 69 57 45 33 21 9 10 22 34 46 58 70 82 94 106 118 130 142 154 166 178 190 202 214 226 238 250 262 274 275 263 251 239 227 215 203 191 179 167 155 143 131 119 107 95 83 71 59 47 35 23 11 12 24 36 48 60 72 84 96 108 120 132 144 156 168 180 192 204 216 228 240 252 264 276"
             )]
         public void Level_3_input(
@@ -88,15 +91,29 @@ namespace Harvester.Domain.Test
             string direction,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE);
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+        
+        [TestCase(3, 4, 1, 4, SOUTH, "Z", "4 8 12 9 5 1 3 7 11 10 6 2")]
+        public void Level_4_spec_examples(
+            int rows,
+            int cols,
+            int startRow,
+            int startCol,
+            string direction,
+            string mode,
+            string expected)
+        {
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        private string Harvest(int rows, int cols, int startRow, int startCol, string direction)
+        private string Harvest(int rows, int cols, int startRow, int startCol, string direction, string mode)
         {
             var plotRows = CreatePlotrows(rows, cols, direction);
 
-            if (direction == "N" || direction == "S")
+            if (direction == NORTH || direction == SOUTH)
             {
                 var tmpRow = startRow;
                 startRow = startCol;
@@ -146,7 +163,7 @@ namespace Harvester.Domain.Test
                 inc += cols;
             }
 
-            if (direction == "N" || direction == "S")
+            if (direction == NORTH || direction == SOUTH)
             {
                 var newPlotRows = new List<List<int>>();
 
