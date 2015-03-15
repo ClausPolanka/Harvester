@@ -97,7 +97,7 @@ namespace Harvester.Domain.Test
         }
 
         [TestCase(3, 4, 1, 4, SOUTH, CIRCULAR, "4 8 12 9 5 1 3 7 11 10 6 2")]
-        [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9 ")]
+        [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9")]
         public void Level_4_spec_examples(
             int rows,
             int cols,
