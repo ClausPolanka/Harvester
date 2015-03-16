@@ -13,8 +13,9 @@ namespace Harvester.Domain.Test
         private const string BLANK = " ";
         private const string SERPENTINE = "S";
         private const string CIRCULAR = "Z";
-        private const string SOUTH = "S";
         private const string NORTH = "N";
+        private const string OST = "O";
+        private const string SOUTH = "S";
 
         [TestCase(3, 4, "1 2 3 4 8 7 6 5 9 10 11 12")]
         [TestCase(2, 5, "1 2 3 4 5 10 9 8 7 6")]
@@ -24,7 +25,7 @@ namespace Harvester.Domain.Test
             )]
         public void Level_1_spec_examples_also_level_1_inputs(int rows, int cols, string expected)
         {
-            var actual = Harvest(rows, cols, startRow: 1, startCol: 1, direction: "", mode: SERPENTINE);
+            var actual = Harvest(rows, cols, startRow: 1, startCol: 1, direction: "", mode: SERPENTINE, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -40,7 +41,7 @@ namespace Harvester.Domain.Test
             int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction: "", mode: SERPENTINE);
+            var actual = Harvest(rows, cols, startRow, startCol, direction: "", mode: SERPENTINE, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -57,7 +58,7 @@ namespace Harvester.Domain.Test
             int startCol,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction: "", mode: SERPENTINE);
+            var actual = Harvest(rows, cols, startRow, startCol, direction: "", mode: SERPENTINE, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -74,7 +75,7 @@ namespace Harvester.Domain.Test
             string direction,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -92,7 +93,7 @@ namespace Harvester.Domain.Test
             string direction,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode: SERPENTINE, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -107,7 +108,7 @@ namespace Harvester.Domain.Test
             string mode,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction, mode);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
@@ -127,13 +128,28 @@ namespace Harvester.Domain.Test
             string mode,
             string expected)
         {
-            var actual = Harvest(rows, cols, startRow, startCol, direction, mode);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode, width: 1);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
-        private string Harvest(int rows, int cols, int startRow, int startCol, string direction, string mode)
+        [TestCase(5, 4, 1, 1, OST, SERPENTINE, 2, "1 5 2 6 3 7 4 8 16 12 15 11 14 10 13 9 17 18 19 20 ")]
+        public void Level_5_spec_examples(
+            int rows,
+            int cols,
+            int startRow,
+            int startCol,
+            string direction,
+            string mode,
+            int width,
+            string expected)
         {
-            var plotRows = CreatePlotrows(rows, cols, direction);
+            var actual = Harvest(rows, cols, startRow, startCol, direction, mode, width);
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        private string Harvest(int rows, int cols, int startRow, int startCol, string direction, string mode, int width)
+        {
+            var plotRows = CreatePlotrows(rows, cols, direction, width);
 
             if (direction == NORTH || direction == SOUTH)
             {
@@ -155,13 +171,62 @@ namespace Harvester.Domain.Test
                     return CircularFromRightToLeft(plotRows);
                 }
                 else if (startRow == plotRows.Count && startCol == 1)
-                {
                     return CircularFromLeftToRight(plotRows);
-                }
                 else if (startRow == plotRows.Count && startCol == plotRows[0].Count)
-                {
                     return CircularFromRightToLeft(plotRows);
+            }
+
+            if (width > 1)
+            {
+                var newPlotRows = new List<List<int[]>>();
+
+                var tmp = true;
+                for (var i = 0; i < rows; i += 2)
+                {
+                    var newPlotRow = new List<int[]>();
+
+                    for (var j = 0; j < cols; j++)
+                    {
+                        var plots = new int[2];
+
+                        if (tmp)
+                        {
+                            plots[0] = plotRows[i][j];
+
+                            if ((i + 1) < plotRows.Count)
+                                plots[1] = plotRows[i + 1][j];
+                        }
+                        else
+                        {
+                            plots[1] = plotRows[i][j];
+
+                            if ((i + 1) < plotRows.Count)
+                                plots[0] = plotRows[i + 1][j];
+                        }
+
+                        newPlotRow.Add(plots);
+                    }
+                    tmp = !tmp;
+
+                    newPlotRows.Add(newPlotRow);
                 }
+
+                var newNewPlotRows = new List<List<int>>();
+
+                if (width == 2 && direction == OST)
+                {
+                    for (var i = 0; i < newPlotRows.Count; i++)
+                    {
+                        if (i%2 == 1)
+                            newPlotRows[i].Reverse();
+                    }
+
+                    newPlotRows.ForEach(row => newNewPlotRows.Add(row.SelectMany(i => i).Where(i => i != 0).ToList()));
+                }
+
+                plotRows = newNewPlotRows;
+                var plotRowsAsString = plotRows.Select(row => string.Join(BLANK, row));
+                return string.Join(BLANK, plotRowsAsString);
             }
 
             return SerpentineHarvested(startRow, startCol, plotRows);
@@ -262,7 +327,7 @@ namespace Harvester.Domain.Test
             return indexPlots;
         }
 
-        private static List<List<int>> CreatePlotrows(int rows, int cols, string direction)
+        private static List<List<int>> CreatePlotrows(int rows, int cols, string direction, int width)
         {
             var allRows = new List<List<int>>();
 
@@ -285,7 +350,7 @@ namespace Harvester.Domain.Test
                 for (var i = 0; i < cols; i++)
                     newPlotRows.Add(allRows.Select(pr => pr[i]).ToList());
 
-                return newPlotRows;
+                allRows = newPlotRows;
             }
 
             return allRows;
