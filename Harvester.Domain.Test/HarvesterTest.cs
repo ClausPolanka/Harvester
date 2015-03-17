@@ -147,7 +147,95 @@ namespace Harvester.Domain.Test
             var actual = Harvest(rows, cols, startRow, startCol, direction, mode, width);
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
-        
+
+        [TestCase(5, 4, 1, 1, OST, SERPENTINE, 2, "1 5 2 6 3 7 4 8 16 12 15 11 14 10 13 9 17 18 19 20")]
+        public void Level_5_spec_examples_alternative(
+            int rows,
+            int cols,
+            int startRow,
+            int startCol,
+            string direction,
+            string mode,
+            int width,
+            string expected)
+        {
+            var plotRows = CreatePlotrows(rows, cols, direction, width);
+
+            var leftHarvesterPlots = LeftHarvesterPlots(plotRows);
+            var rightHavesterPlots = plotRows.Except(leftHarvesterPlots).ToList();
+
+            // Ost, Serpentine
+            RevertPlotsForSerpentine(leftHarvesterPlots);
+            RevertPlotsForSerpentine(rightHavesterPlots);
+
+            var finalPlots = new List<List<int>>();
+
+            for (var i = 0; i < plotRows.Count; i++)
+            {
+                if (i < leftHarvesterPlots.Count)
+                    finalPlots.Add(leftHarvesterPlots[i]);
+
+                if (i < rightHavesterPlots.Count)
+                    finalPlots.Add(rightHavesterPlots[i]);
+            }
+
+            int end;
+            
+            if (finalPlots.Count%2 == 0)
+                end = finalPlots.Count;
+            else
+                end = finalPlots.Count - 1;
+
+            var rowsAsString = new List<string>();
+
+            for (var i = 0; i < end; i += 2)
+            {
+                rowsAsString.Add(string.Join(BLANK, (finalPlots[i]
+                    .Zip(finalPlots[i + 1], (plotLeft, plotRigth) => string.Format("{0} {1}", plotLeft, plotRigth))
+                    .ToList())));
+            }
+
+            if (end < finalPlots.Count)
+                rowsAsString.Add(string.Join(BLANK, finalPlots.Last()));
+
+            var actual = string.Join(BLANK, rowsAsString);
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        private static void RevertPlotsForSerpentine(List<List<int>> leftHarvesterPlots)
+        {
+            for (var i = 0; i < leftHarvesterPlots.Count; i++)
+            {
+                if (i%2 == 1)
+                    leftHarvesterPlots[i].Reverse();
+            }
+        }
+
+        private static List<List<int>> LeftHarvesterPlots(List<List<int>> plotRows)
+        {
+            var leftHarvester = new List<List<int>>();
+
+            var shouldAddThree = true;
+
+            for (var i = 0; i < plotRows.Count;)
+            {
+                leftHarvester.Add(plotRows[i]);
+
+                if (shouldAddThree)
+                {
+                    i += 3;
+                    shouldAddThree = false;
+                }
+                else
+                {
+                    i++;
+                    shouldAddThree = true;
+                }
+            }
+
+            return leftHarvester;
+        }
+
         private string Harvest(int rows, int cols, int startRow, int startCol, string direction, string mode, int width)
         {
             var plotRows = CreatePlotrows(rows, cols, direction, width);
