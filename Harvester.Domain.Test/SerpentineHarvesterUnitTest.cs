@@ -111,5 +111,16 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
+        [TestCase(2, 1, "3 1 2 4")]
+        [TestCase(2, 2, "4 2 1 3")]
+        public void Two_rows_two_cols_direction_north(int startRow, int startCol, string expected)
+        {
+            var sut = new SerpentineHarvester(rows: 2, cols: 2, direction: "N", width: 1);
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
     }
 }
