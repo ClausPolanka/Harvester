@@ -25,17 +25,18 @@ namespace Harvester.Domain
 
             if (direction == "S")
             {
-                plotRows = Transpose(plotRows);
                 direction = startRow == 1 ? "O" : "W";
                 var firstToLast = startCol == plotRows.First().Count;
+                plotRows = Transpose(plotRows);
                 startRow = firstToLast ? plotRows.Count : startRow;
+
             }
 
             if (direction == "N")
             {
-                plotRows = Transpose(plotRows);
                 direction = startRow == plotRows.Count ? "W" : "O";
-                startRow = startCol == 1 ? 1 : startRow;
+                plotRows = Transpose(plotRows);
+                startRow = startCol == 1 ? 1 : plotRows.Count;
             }
 
             if (startRow == plotRows.Count)

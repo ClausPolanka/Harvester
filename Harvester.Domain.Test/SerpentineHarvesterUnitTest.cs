@@ -122,5 +122,25 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
+        [TestCase(1, 5, "5 10 9 4 3 8 7 2 1 6")]
+        public void Two_rows_five_cols_direction_south(int startRow, int startCol, string expected)
+        {
+            var sut = new SerpentineHarvester(rows: 2, cols: 5, direction: "S", width: 1);
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        [TestCase(5, 2, "10 8 6 4 2 1 3 5 7 9")]
+        public void Five_rows_two_cols_direction_south(int startRow, int startCol, string expected)
+        {
+            var sut = new SerpentineHarvester(rows: 5, cols: 2, direction: "N", width: 1);
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+        
     }
 }
