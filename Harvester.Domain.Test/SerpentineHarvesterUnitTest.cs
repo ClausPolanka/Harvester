@@ -90,5 +90,15 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo("6 7 5 4 2 3 1 0"), "plot numbers");
         }
 
+        [TestCase]
+        public void Four_rows_two_cols_west_width_of_1_starting_in_last_row_last_plot()
+        {
+            var sut = new SerpentineHarvester(rows: 4, cols: 2, direction: "W", width: 1);
+
+            var actual = sut.Harvest(startRow: 4, startCol: 2);
+
+            Assert.That(actual, Is.EqualTo("7 6 4 5 3 2 0 1"), "plot numbers");
+        }
+
     }
 }
