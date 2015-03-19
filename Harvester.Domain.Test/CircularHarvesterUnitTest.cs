@@ -60,5 +60,15 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo("0 1 3 2"), "plot numbers");
         }
 
+        [TestCase]
+        public void Four_rows_two_cols_east_width_of_1()
+        {
+            var sut = new CircularHarvester(rows: 4, cols: 2, direction: "O", width: 1);
+
+            var actual = sut.Harvest(startRow: 1, startCol: 1);
+
+            Assert.That(actual, Is.EqualTo("0 1 3 2 4 5 7 6"), "plot numbers");
+        }
+
     }
 }

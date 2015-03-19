@@ -21,12 +21,18 @@ namespace Harvester.Domain
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            
+
             if (plotRows.Count > 1)
-                plotRows[1].Reverse();
-            
+            {
+                plotRows.ForEach(elem =>
+                {
+                    var i = plotRows.IndexOf(elem);
+                    if (i%2 == 1)
+                        plotRows[i].Reverse();
+                });
+            }
+
             return string.Join(" ", plotRows.SelectMany(row => row));
         }
-
     }
 }
