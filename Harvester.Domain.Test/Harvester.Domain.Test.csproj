@@ -42,11 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarvesterTest.cs" />
+    <Compile Include="CircularHarvesterUnitTest.cs" />
+    <Compile Include="HarvesterAcceptanceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Harvester.Domain\Harvester.Domain.csproj">
+      <Project>{8F20067A-3A91-4ED9-9964-8391DC28D2DB}</Project>
+      <Name>Harvester.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
