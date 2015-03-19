@@ -61,6 +61,16 @@ namespace Harvester.Domain.Test
         }
 
         [TestCase]
+        public void Two_rows_two_cols_west_width_of_1()
+        {
+            var sut = new CircularHarvester(rows: 2, cols: 2, direction: "W", width: 1);
+
+            var actual = sut.Harvest(startRow: 1, startCol: 2);
+
+            Assert.That(actual, Is.EqualTo("1 0 2 3"), "plot numbers");
+        }
+
+        [TestCase]
         public void Four_rows_two_cols_east_width_of_1()
         {
             var sut = new CircularHarvester(rows: 4, cols: 2, direction: "O", width: 1);

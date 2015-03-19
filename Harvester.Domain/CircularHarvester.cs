@@ -22,15 +22,15 @@ namespace Harvester.Domain
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
 
-            if (plotRows.Count > 1)
+            if (direction == "W")
+                plotRows.Insert(0, Enumerable.Empty<int>().ToList());
+
+            plotRows.ForEach(elem =>
             {
-                plotRows.ForEach(elem =>
-                {
-                    var i = plotRows.IndexOf(elem);
-                    if (i%2 == 1)
-                        plotRows[i].Reverse();
-                });
-            }
+                var i = plotRows.IndexOf(elem);
+                if (i%2 == 1)
+                    plotRows[i].Reverse();
+            });
 
             return string.Join(" ", plotRows.SelectMany(row => row));
         }
