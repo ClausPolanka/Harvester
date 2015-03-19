@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarvesterTest.cs" />
     <Compile Include="SerpentineHarvesterUnitTest.cs" />
     <Compile Include="HarvesterAcceptanceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
