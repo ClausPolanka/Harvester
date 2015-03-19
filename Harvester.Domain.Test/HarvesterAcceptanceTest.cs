@@ -90,7 +90,7 @@ namespace Harvester.Domain.Test
         {
             var sut = new SerpentineHarvester(rows, cols, direction, width: 1);
             
-            var actual = sut.Harvest(startRow: 1, startCol: 1);
+            var actual = sut.Harvest(startRow, startCol);
             
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
@@ -111,7 +111,7 @@ namespace Harvester.Domain.Test
         {
             var sut = new SerpentineHarvester(rows, cols, direction, width: 1);
             
-            var actual = sut.Harvest(startRow: 1, startCol: 1);
+            var actual = sut.Harvest(startRow, startCol);
             
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
