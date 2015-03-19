@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Harvester.Domain.Test
 {
     [TestFixture]
-    public class CircularHarvesterUnitTest
+    public class SerpentineHarvesterUnitTest
     {
         [TestCase]
         public void One_row_one_col_east_width_of_1()
