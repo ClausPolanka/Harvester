@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace Harvester.Domain
 {
-    public class CircularHarvester : PlotHarvester
+    public class SerpentineHarvester : PlotHarvester
     {
         private readonly int rows;
         private readonly int cols;
         private readonly string direction;
         private readonly int width;
 
-        public CircularHarvester(int rows, int cols, string direction, int width)
+        public SerpentineHarvester(int rows, int cols, string direction, int width)
         {
             this.rows = rows;
             this.cols = cols;

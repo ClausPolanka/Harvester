@@ -29,7 +29,7 @@ namespace Harvester.Domain.Test
             int width,
             string expected)
         {
-            var sut = new CircularHarvester(rows, cols, direction, width);
+            var sut = new SerpentineHarvester(rows, cols, direction, width);
             
             var actual = sut.Harvest(startRow, startCol);
             
