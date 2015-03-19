@@ -39,6 +39,12 @@ namespace Harvester.Domain
                 startRow = startCol == 1 ? 1 : plotRows.Count;
             }
 
+            ReverseNecessaryRows(startRow, plotRows);
+            return string.Join(" ", plotRows.SelectMany(row => row));
+        }
+
+        private void ReverseNecessaryRows(int startRow, List<List<int>> plotRows)
+        {
             if (startRow == plotRows.Count)
                 plotRows.Reverse();
 
@@ -51,8 +57,6 @@ namespace Harvester.Domain
                 if (i%2 == 1)
                     plotRows[i].Reverse();
             });
-
-            return string.Join(" ", plotRows.SelectMany(row => row));
         }
 
         public static List<List<T>> Transpose<T>(List<List<T>> lists)
