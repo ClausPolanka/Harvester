@@ -17,7 +17,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("0"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("1"), "plot numbers");
         }
 
         [TestCase]
@@ -27,7 +27,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("0 1"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("1 2"), "plot numbers");
         }
 
         [TestCase]
@@ -37,7 +37,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("0 1"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("1 2"), "plot numbers");
         }
 
         [TestCase]
@@ -47,7 +47,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("0 1 2"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("1 2 3"), "plot numbers");
         }
 
         [TestCase]
@@ -57,7 +57,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("0 1 3 2"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("1 2 4 3"), "plot numbers");
         }
 
         [TestCase]
@@ -67,7 +67,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 2);
 
-            Assert.That(actual, Is.EqualTo("1 0 2 3"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("2 1 3 4"), "plot numbers");
         }
 
         [TestCase]
@@ -77,7 +77,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 1, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("0 1 3 2 4 5 7 6"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("1 2 4 3 5 6 8 7"), "plot numbers");
         }
 
         [TestCase]
@@ -87,7 +87,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 4, startCol: 1);
 
-            Assert.That(actual, Is.EqualTo("6 7 5 4 2 3 1 0"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("7 8 6 5 3 4 2 1"), "plot numbers");
         }
 
         [TestCase]
@@ -97,7 +97,7 @@ namespace Harvester.Domain.Test
 
             var actual = sut.Harvest(startRow: 4, startCol: 2);
 
-            Assert.That(actual, Is.EqualTo("7 6 4 5 3 2 0 1"), "plot numbers");
+            Assert.That(actual, Is.EqualTo("8 7 5 6 4 3 1 2"), "plot numbers");
         }
 
     }

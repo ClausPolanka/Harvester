@@ -10,7 +10,7 @@ namespace Harvester.Domain
             var plots = new List<int>();
 
             for (var i = 0; i < rows*cols; i++)
-                plots.Add(i);
+                plots.Add(i+1);
 
             var plotRows = new List<List<int>>();
 
