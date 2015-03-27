@@ -117,24 +117,6 @@ namespace Harvester.Domain.Test
         }
 
         [TestCase(3, 4, 1, 4, SOUTH, CIRCULAR, "4 8 12 9 5 1 3 7 11 10 6 2")]
-        [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9")]
-        public void Level_4_spec_examples(
-            int rows,
-            int cols,
-            int startRow,
-            int startCol,
-            string direction,
-            string mode,
-            string expected)
-        {
-            //var sut = new CircularHarvester(rows, cols, direction, width: 1);
-            
-            //var actual = sut.Harvest(startRow: 1, startCol: 1);
-            
-            //Assert.That(actual, Is.EqualTo(expected), "plot numbers");
-        }
-
-        [TestCase(3, 4, 1, 4, SOUTH, CIRCULAR, "4 8 12 9 5 1 3 7 11 10 6 2")]
         [TestCase(2, 5, 2, 1, NORTH, SERPENTINE, "6 1 2 7 8 3 4 9 10 5")]
         [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9")]
         [TestCase(5, 2, 5, 2, NORTH, CIRCULAR, "10 8 6 4 2 1 3 5 7 9")]
