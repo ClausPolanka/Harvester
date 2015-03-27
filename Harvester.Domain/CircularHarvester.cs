@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Harvester.Domain
 {
     public class CircularHarvester : PlotHarvester
@@ -17,7 +20,20 @@ namespace Harvester.Domain
 
         public string Harvest(int startRow, int startCol)
         {
-            return string.Empty;
+            var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
+
+            var reordered = new List<List<int>>();
+
+            while (plotRows.Any())
+            {
+                reordered.Add(plotRows.First().ToList());
+                reordered.Add(plotRows.Last().ToList());
+                plotRows.RemoveAt(plotRows.IndexOf(plotRows.First()));
+                plotRows.RemoveAt(plotRows.IndexOf(plotRows.Last()));
+            }
+
+            ListExtensions.ReverseEverySecondElementIn(reordered);
+            return ListExtensions.JoinWithBlank(reordered);
         }
     }
 }

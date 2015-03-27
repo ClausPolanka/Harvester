@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B8E6CF0-9087-4C81-BD29-DE558F1DA6EC}</ProjectGuid>
+    <ProjectGuid>{48681A28-09CA-4399-9902-C2D36C3C4C7C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Harvester.Domain.Test</RootNamespace>
-    <AssemblyName>Harvester.Domain.Test</AssemblyName>
+    <RootNamespace>Harvester.Domain.UnitTest</RootNamespace>
+    <AssemblyName>Harvester.Domain.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,17 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarvesterAcceptanceTest.cs" />
+    <Compile Include="CircularHarvesterUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="SerpentineHarvesterUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Harvester.Domain\Harvester.Domain.csproj">
-      <Project>{8F20067A-3A91-4ED9-9964-8391DC28D2DB}</Project>
+      <Project>{8f20067a-3a91-4ed9-9964-8391dc28d2db}</Project>
       <Name>Harvester.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

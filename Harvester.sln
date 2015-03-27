@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvester.Domain", "Harvest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvester.Domain.Test", "Harvester.Domain.Test\Harvester.Domain.Test.csproj", "{1B8E6CF0-9087-4C81-BD29-DE558F1DA6EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvester.Domain.UnitTest", "Harvester.Domain.UnitTest\Harvester.Domain.UnitTest.csproj", "{48681A28-09CA-4399-9902-C2D36C3C4C7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1B8E6CF0-9087-4C81-BD29-DE558F1DA6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B8E6CF0-9087-4C81-BD29-DE558F1DA6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B8E6CF0-9087-4C81-BD29-DE558F1DA6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48681A28-09CA-4399-9902-C2D36C3C4C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48681A28-09CA-4399-9902-C2D36C3C4C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48681A28-09CA-4399-9902-C2D36C3C4C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48681A28-09CA-4399-9902-C2D36C3C4C7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

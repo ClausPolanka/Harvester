@@ -27,7 +27,7 @@ namespace Harvester.Domain
             {
                 direction = startRow == 1 ? "O" : "W";
                 var firstToLast = startCol == plotRows.First().Count;
-                plotRows = Transpose(plotRows);
+                plotRows = ListExtensions.Transpose(plotRows);
                 startRow = firstToLast ? plotRows.Count : startRow;
 
             }
@@ -35,12 +35,12 @@ namespace Harvester.Domain
             if (direction == "N")
             {
                 direction = startRow == plotRows.Count ? "W" : "O";
-                plotRows = Transpose(plotRows);
+                plotRows = ListExtensions.Transpose(plotRows);
                 startRow = startCol == 1 ? 1 : plotRows.Count;
             }
 
             ReverseNecessaryRows(startRow, plotRows);
-            return string.Join(" ", plotRows.SelectMany(row => row));
+            return ListExtensions.JoinWithBlank(plotRows);
         }
 
         private void ReverseNecessaryRows(int startRow, List<List<int>> plotRows)
@@ -51,26 +51,7 @@ namespace Harvester.Domain
             if (direction == "W")
                 plotRows.Insert(0, Enumerable.Empty<int>().ToList());
 
-            plotRows.ForEach(elem =>
-            {
-                var i = plotRows.IndexOf(elem);
-                if (i%2 == 1)
-                    plotRows[i].Reverse();
-            });
-        }
-
-        public static List<List<T>> Transpose<T>(List<List<T>> lists)
-        {
-            var longest = lists.Any() ? lists.Max(l => l.Count) : 0;
-            List<List<T>> outer = new List<List<T>>(longest);
-            for (int i = 0; i < longest; i++)
-                outer.Add(new List<T>(lists.Count));
-            for (int j = 0; j < lists.Count; j++)
-            {
-                for (int i = 0; i < longest; i++)
-                    outer[i].Add(lists[j].Count > i ? lists[j][i] : default(T));
-            }
-            return outer;
+            ListExtensions.ReverseEverySecondElementIn(plotRows);
         }
     }
 }
