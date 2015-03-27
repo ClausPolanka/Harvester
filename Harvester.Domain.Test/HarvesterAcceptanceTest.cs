@@ -132,7 +132,11 @@ namespace Harvester.Domain.Test
             string mode,
             string expected)
         {
+            var sut = new CircularHarvester(rows, cols, direction, width: 1);
             
+            var actual = sut.Harvest(startRow, startCol);
+            
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
         [TestCase(5, 4, 1, 1, OST, SERPENTINE, 2, "1 5 2 6 3 7 4 8 16 12 15 11 14 10 13 9 17 18 19 20")]
