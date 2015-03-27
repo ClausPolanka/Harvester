@@ -43,15 +43,15 @@ namespace Harvester.Domain
             return ListExtensions.JoinWithBlank(plotRows);
         }
 
-        private void ReverseNecessaryRows(int startRow, List<List<int>> plotRows)
+        private void ReverseNecessaryRows(int startRow, List<List<int>> list)
         {
-            if (startRow == plotRows.Count)
-                plotRows.Reverse();
+            if (startRow == list.Count)
+                list.Reverse();
 
             if (direction == "W")
-                plotRows.Insert(0, Enumerable.Empty<int>().ToList());
+                list.Insert(0, Enumerable.Empty<int>().ToList());
 
-            ListExtensions.ReverseEverySecondElementIn(plotRows);
+            ListExtensions.ReverseEverySecondElementIn(list);
         }
     }
 }

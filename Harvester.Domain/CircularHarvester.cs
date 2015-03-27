@@ -32,8 +32,16 @@ namespace Harvester.Domain
                 plotRows.RemoveAt(plotRows.IndexOf(plotRows.Last()));
             }
 
-            ListExtensions.ReverseEverySecondElementIn(reordered);
+            ReverseNecessaryRows(reordered);
             return ListExtensions.JoinWithBlank(reordered);
+        }
+
+        private void ReverseNecessaryRows(List<List<int>> list)
+        {
+            if (direction == "W")
+                list.Insert(0, Enumerable.Empty<int>().ToList());
+
+            ListExtensions.ReverseEverySecondElementIn(list);
         }
     }
 }
