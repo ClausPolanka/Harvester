@@ -33,18 +33,16 @@ namespace Harvester.Domain
 
         public PlotHarvester CreateCircular(int nrOfRows, int nrOfCols, string direction)
         {
-            PlotHarvester sut;
             if (direction == "S")
-                sut = new CircularSouthHarvester(nrOfRows, nrOfCols, width: 1);
-            else if (direction == "N")
             {
-                sut = new CircularNorthHarvester(nrOfRows, nrOfCols, width: 1);
+                return new CircularSouthHarvester(nrOfRows, nrOfCols, width: 1);
             }
-            else if (direction == "O")
-                sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
-            else
-                sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
-            return sut;
+            if (direction == "N")
+            {
+                return new CircularNorthHarvester(nrOfRows, nrOfCols, width: 1);
+            }
+            
+            return new CircularEastAndWestHarvester(nrOfRows, nrOfCols, direction, width: 1);
         }
     }
 }

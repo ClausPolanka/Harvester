@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularHarvester.cs" />
+    <Compile Include="CircularEastAndWestHarvester.cs" />
     <Compile Include="CircularHarvesterAll.cs" />
     <Compile Include="CircularNorthHarvester.cs" />
     <Compile Include="CircularSouthHarvester.cs" />
