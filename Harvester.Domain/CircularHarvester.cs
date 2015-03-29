@@ -31,8 +31,12 @@ namespace Harvester.Domain
             {
                 reordered.Add(plotRows.First().ToList());
                 plotRows.RemoveAt(plotRows.IndexOf(plotRows.First()));
-                reordered.Add(plotRows.Last().ToList());
-                plotRows.RemoveAt(plotRows.IndexOf(plotRows.Last()));
+
+                if (plotRows.Count > 1)
+                {
+                    reordered.Add(plotRows.Last().ToList());
+                    plotRows.RemoveAt(plotRows.IndexOf(plotRows.Last()));
+                }
             }
 
             ReverseNecessaryRows(reordered);
