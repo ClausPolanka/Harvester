@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Harvester.Domain
 {
     public class PlotHarvesterFactory
@@ -22,7 +25,7 @@ namespace Harvester.Domain
             if (mode == CIRCULAR)
                 sut = CreateCircular(rows, cols, direction);
             else
-                sut = new SerpentineHarvester(rows, cols, direction, width: 1);
+                sut = CreateSerpentine(rows, cols, direction);
             return sut;
         }
 
@@ -34,15 +37,60 @@ namespace Harvester.Domain
         public PlotHarvester CreateCircular(int nrOfRows, int nrOfCols, string direction)
         {
             if (direction == "S")
+                return new SouthHarvester(nrOfRows, nrOfCols, width: 1, generalHarvester: new CircularHarvester());
+            if (direction == "N")
+                return new NorthHarvester(nrOfRows, nrOfCols, width: 1, generalHarvester: new CircularHarvester());
+
+            return new CircularEastAndWestHarvester(nrOfRows, nrOfCols, direction, width: 1);
+        }
+
+        public PlotHarvester CreateSerpentine(int nrOfRows, int nrOfCols, string direction)
+        {
+            if (direction == "S")
             {
-                return new CircularSouthHarvester(nrOfRows, nrOfCols, width: 1);
+                return new SouthHarvester(nrOfRows, nrOfCols, width: 1,
+                    generalHarvester: new GeneralSerpentineHarvester());
             }
             if (direction == "N")
             {
-                return new CircularNorthHarvester(nrOfRows, nrOfCols, width: 1);
+                return new NorthHarvester(nrOfRows, nrOfCols, width: 1,
+                    generalHarvester: new GeneralSerpentineHarvester());
             }
-            
-            return new CircularEastAndWestHarvester(nrOfRows, nrOfCols, direction, width: 1);
+
+            return new SerpentineHarvester(nrOfRows, nrOfCols, direction, width: 1);
+        }
+    }
+
+    public class SerpentineHarvester : PlotHarvester
+    {
+        private readonly int rows;
+        private readonly int cols;
+        private string direction;
+        private readonly int width;
+
+        public SerpentineHarvester(int rows, int cols, string direction, int width)
+        {
+            this.rows = rows;
+            this.cols = cols;
+            this.direction = direction;
+            this.width = width;
+        }
+
+        public string Harvest(int startRow, int startCol)
+        {
+            var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
+            return new GeneralSerpentineHarvester().Harvest(startRow, plotRows, direction);
+        }
+
+        private void ReverseNecessaryRows(int startRow, List<List<int>> list)
+        {
+            if (startRow == list.Count)
+                list.Reverse();
+
+            if (direction == "W")
+                list.Insert(0, Enumerable.Empty<int>().ToList());
+
+            ListExtensions.ReverseEverySecondElementIn(list);
         }
     }
 }

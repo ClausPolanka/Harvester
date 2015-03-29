@@ -21,7 +21,7 @@ namespace Harvester.Domain
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            return new GeneralCircularHarvester().Harvest(startRow, plotRows, direction);
+            return new CircularHarvester().Harvest(startRow, plotRows, direction);
         }
     }
 }

@@ -40,12 +40,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircularEastAndWestHarvester.cs" />
-    <Compile Include="GeneralCircularHarvester.cs" />
-    <Compile Include="CircularNorthHarvester.cs" />
-    <Compile Include="CircularSouthHarvester.cs" />
+    <Compile Include="CircularHarvester.cs" />
+    <Compile Include="NorthHarvester.cs" />
+    <Compile Include="SouthHarvester.cs" />
+    <Compile Include="GeneralHarvester.cs" />
+    <Compile Include="GeneralPlotHarvester.cs" />
+    <Compile Include="GeneralSerpentineHarvester.cs" />
     <Compile Include="ListExtensions.cs" />
     <Compile Include="PlotHarvesterFactory.cs" />
-    <Compile Include="SerpentineHarvester.cs" />
     <Compile Include="PlotHarvester.cs" />
     <Compile Include="PlotRowCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
