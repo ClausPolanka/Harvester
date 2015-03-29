@@ -5,6 +5,12 @@ namespace Harvester.Domain
 {
     public class PlotRowCreator
     {
+        public List<List<int>> CreateTransposedPlotRows(int rows, int cols)
+        {
+            var original = CreatePlotRows(rows, cols);
+            return ListExtensions.Transpose(original);
+        }
+
         public List<List<int>> CreatePlotRows(int rows, int cols)
         {
             var plots = new List<int>();

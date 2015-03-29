@@ -8,26 +8,22 @@ namespace Harvester.Domain
 {
     public class CircularNorthHarvester : PlotHarvester
     {
-        private string direction;
         private readonly int rows;
         private readonly int cols;
         private readonly int width;
-        private CircularHarvesterAll all = new CircularHarvesterAll();
 
         public CircularNorthHarvester(int rows, int cols, int width)
         {
             this.rows = rows;
             this.cols = cols;
             this.width = width;
-            this.direction = "W";
         }
 
         public string Harvest(int startRow, int startCol)
         {
-            var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            var transposed = ListExtensions.Transpose(plotRows);
-            var newStartRow = startCol == 1 ? 1 : transposed.Count;
-            return all.Harvest(newStartRow, transposed, direction);
+            var plotRows = new PlotRowCreator().CreateTransposedPlotRows(rows, cols);
+            var newStartRow = startCol == 1 ? 1 : cols;
+            return new GeneralCircularHarvester().Harvest(newStartRow, plotRows, direction: "W");
         }
 
     }

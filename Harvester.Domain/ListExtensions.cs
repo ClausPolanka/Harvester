@@ -6,14 +6,14 @@ namespace Harvester.Domain
 {
     public static class ListExtensions
     {
-        public static void ReverseEverySecondElementIn<T>(List<List<T>> list)
+        public static void ReverseEverySecondElementIn<T>(List<List<T>> lists)
         {
-            list.ForEach(elem =>
+            lists.ForEach(elem =>
             {
-                var i = list.IndexOf(elem);
+                var i = lists.IndexOf(elem);
                 
                 if (i%2 == 1)
-                    list[i].Reverse();
+                    lists[i].Reverse();
             });
         }
 

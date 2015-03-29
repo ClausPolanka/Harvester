@@ -10,24 +10,20 @@ namespace Harvester.Domain
     {
         private readonly int rows;
         private readonly int cols;
-        private string direction;
         private readonly int width;
-        private CircularHarvesterAll all = new CircularHarvesterAll();
 
         public CircularSouthHarvester(int rows, int cols, int width)
         {
             this.rows = rows;
             this.cols = cols;
             this.width = width;
-            this.direction = "O";
         }
 
         public string Harvest(int startRow, int startCol)
         {
-            var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            var transposed = ListExtensions.Transpose(plotRows);
-            var newStartRow = startCol == plotRows.First().Count ? transposed.Count : startRow;
-            return all.Harvest(newStartRow, transposed, direction);
+            var plotRows = new PlotRowCreator().CreateTransposedPlotRows(rows, cols);
+            var newStartRow = startCol == cols ? cols : startRow;
+            return new GeneralCircularHarvester().Harvest(newStartRow, plotRows, direction: "O");
         }
     }
 }
