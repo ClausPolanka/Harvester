@@ -30,8 +30,8 @@ namespace Harvester.Domain
             while (plotRows.Any())
             {
                 reordered.Add(plotRows.First().ToList());
-                reordered.Add(plotRows.Last().ToList());
                 plotRows.RemoveAt(plotRows.IndexOf(plotRows.First()));
+                reordered.Add(plotRows.Last().ToList());
                 plotRows.RemoveAt(plotRows.IndexOf(plotRows.Last()));
             }
 
