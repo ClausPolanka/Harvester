@@ -22,6 +22,9 @@ namespace Harvester.Domain
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
 
+            if (startRow == plotRows.Count)
+                plotRows.Reverse();
+
             var reordered = new List<List<int>>();
 
             while (plotRows.Any())
