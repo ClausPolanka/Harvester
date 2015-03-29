@@ -24,7 +24,7 @@ namespace Harvester.Domain.UnitTest
         //   4  5  6
         //   7  8  9
         //  10 11 12* ←
-        [TestCase(4, 3, 4, 3, "W", "12 11 10 1 2 3 9 8 7 4 5 6 ")]
+        [TestCase(4, 3, 4, 3, "W", "12 11 10 1 2 3 9 8 7 4 5 6  ")]
         public void Even_number_of_rows(
             int nrOfRows,
             int nrOfCols,
