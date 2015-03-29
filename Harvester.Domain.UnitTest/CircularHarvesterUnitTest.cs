@@ -61,8 +61,9 @@ namespace Harvester.Domain.UnitTest
         //   1  2  3
         //   4  5  6
         //   7  8  9
-        //  10 11 12* ←
-        //[TestCase(4, 3, 4, 3, "W", "12 11 10 1 2 3 9 8 7 4 5 6")]
+        //  10 11 12
+        //  13 14 15* ←
+        [TestCase(5, 3, 5, 3, "W", "15 14 13 1 2 3 12 11 10 4 5 6 9 8 7")]
         public void Odd_number_of_rows(
             int nrOfRows,
             int nrOfCols,
