@@ -39,7 +39,7 @@ namespace Harvester.Domain.UnitTest
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
-        
+
         // → 1*  2  3
         //   4   5  6
         //   7   8  9
@@ -55,8 +55,9 @@ namespace Harvester.Domain.UnitTest
         //    1  2  3
         //    4  5  6
         //    7  8  9
-        // → 10* 11 12
-        //[TestCase(4, 3, 4, 1, "O", "10 11 12 3 2 1 7 8 9 6 5 4")]
+        //   10  11 12
+        // → 13* 14 15
+        [TestCase(5, 3, 5, 1, "O", "13 14 15 3 2 1 10 11 12 6 5 4 7 8 9")]
         //   1  2  3
         //   4  5  6
         //   7  8  9
@@ -76,6 +77,5 @@ namespace Harvester.Domain.UnitTest
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
-
     }
 }
