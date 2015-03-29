@@ -42,6 +42,7 @@
     <Compile Include="CircularEastAndWestHarvester.cs" />
     <Compile Include="CircularHarvester.cs" />
     <Compile Include="NorthHarvester.cs" />
+    <Compile Include="SerpentineHarvester.cs" />
     <Compile Include="SouthHarvester.cs" />
     <Compile Include="GeneralHarvester.cs" />
     <Compile Include="GeneralPlotHarvester.cs" />
