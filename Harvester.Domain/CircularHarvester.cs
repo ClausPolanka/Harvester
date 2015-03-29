@@ -7,7 +7,7 @@ namespace Harvester.Domain
     {
         private readonly int rows;
         private readonly int cols;
-        private readonly string direction;
+        private string direction;
         private readonly int width;
 
         public CircularHarvester(int rows, int cols, string direction, int width)
@@ -21,6 +21,14 @@ namespace Harvester.Domain
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
+
+            if (direction == "S")
+            {
+                direction = startRow == 1 ? "O" : "W";
+                var firstToLast = startCol == plotRows.First().Count;
+                plotRows = ListExtensions.Transpose(plotRows);
+                startRow = firstToLast ? plotRows.Count : startRow;
+            }
 
             if (startRow == plotRows.Count)
                 plotRows.Reverse();
