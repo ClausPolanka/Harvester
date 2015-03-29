@@ -35,10 +35,10 @@ namespace Harvester.Domain
         {
             PlotHarvester sut;
             if (direction == "S")
-                sut = new CircularSouthHarvester(nrOfRows, nrOfCols, direction, width: 1);
+                sut = new CircularSouthHarvester(nrOfRows, nrOfCols, width: 1);
             else if (direction == "N")
             {
-                sut = new CircularNorthHarvester(nrOfRows, nrOfCols, direction, width: 1);
+                sut = new CircularNorthHarvester(nrOfRows, nrOfCols, width: 1);
             }
             else if (direction == "O")
                 sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);

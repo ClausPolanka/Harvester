@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircularHarvester.cs" />
+    <Compile Include="CircularHarvesterAll.cs" />
     <Compile Include="CircularNorthHarvester.cs" />
     <Compile Include="CircularSouthHarvester.cs" />
     <Compile Include="ListExtensions.cs" />
