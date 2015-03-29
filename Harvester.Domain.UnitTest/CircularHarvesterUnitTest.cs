@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 
 namespace Harvester.Domain.UnitTest
 {
@@ -33,7 +35,7 @@ namespace Harvester.Domain.UnitTest
             string direction,
             string expected)
         {
-            var sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            var sut = new PlotHarvesterFactory(nrOfRows, nrOfCols, direction).CreateCircular();
 
             var actual = sut.Harvest(startRow, startCol);
 
@@ -72,7 +74,7 @@ namespace Harvester.Domain.UnitTest
             string direction,
             string expected)
         {
-            var sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            var sut = new PlotHarvesterFactory(nrOfRows, nrOfCols, direction).CreateCircular();
 
             var actual = sut.Harvest(startRow, startCol);
 
@@ -115,11 +117,12 @@ namespace Harvester.Domain.UnitTest
             string direction,
             string expected)
         {
-            var sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            var sut = new PlotHarvesterFactory(nrOfRows, nrOfCols, direction).CreateCircular();
 
             var actual = sut.Harvest(startRow, startCol);
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
     }
+
 }

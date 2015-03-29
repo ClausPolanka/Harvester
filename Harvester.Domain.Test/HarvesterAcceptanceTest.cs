@@ -9,7 +9,6 @@ namespace Harvester.Domain.Test
     [TestFixture]
     public class HarvesterAcceptanceTest
     {
-        private const string BLANK = " ";
         private const string SERPENTINE = "S";
         private const string CIRCULAR = "Z";
         private const string NORTH = "N";

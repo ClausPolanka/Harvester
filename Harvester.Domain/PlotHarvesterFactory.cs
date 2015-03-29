@@ -20,9 +20,30 @@ namespace Harvester.Domain
         {
             PlotHarvester sut;
             if (mode == CIRCULAR)
-                sut = new CircularHarvester(rows, cols, direction, width: 1);
+                sut = CreateCircular(rows, cols, direction);
             else
                 sut = new SerpentineHarvester(rows, cols, direction, width: 1);
+            return sut;
+        }
+
+        public PlotHarvester CreateCircular(string mode = SERPENTINE)
+        {
+            return CreateCircular(rows, cols, direction);
+        }
+
+        public PlotHarvester CreateCircular(int nrOfRows, int nrOfCols, string direction)
+        {
+            PlotHarvester sut;
+            if (direction == "S")
+                sut = new CircularSouthHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            else if (direction == "N")
+            {
+                sut = new CircularNorthHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            }
+            else if (direction == "O")
+                sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            else
+                sut = new CircularHarvester(nrOfRows, nrOfCols, direction, width: 1);
             return sut;
         }
     }

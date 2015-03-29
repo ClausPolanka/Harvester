@@ -1,9 +1,12 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Harvester.Domain
 {
-    public class CircularHarvester : PlotHarvester
+    public class CircularNorthHarvester : PlotHarvester
     {
         private readonly int rows;
         private readonly int cols;
@@ -11,7 +14,7 @@ namespace Harvester.Domain
         private readonly int width;
         private List<List<int>> plotRows;
 
-        public CircularHarvester(int rows, int cols, string direction, int width)
+        public CircularNorthHarvester(int rows, int cols, string direction, int width)
         {
             this.rows = rows;
             this.cols = cols;
@@ -22,6 +25,13 @@ namespace Harvester.Domain
 
         public string Harvest(int startRow, int startCol)
         {
+            if (direction == "N")
+            {
+                direction = startRow == plotRows.Count ? "W" : "O";
+                plotRows = ListExtensions.Transpose(plotRows);
+                startRow = startCol == 1 ? 1 : plotRows.Count;
+            }
+
             if (startRow == plotRows.Count)
                 plotRows.Reverse();
 
