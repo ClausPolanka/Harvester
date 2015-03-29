@@ -30,6 +30,14 @@ namespace Harvester.Domain
                 startRow = firstToLast ? plotRows.Count : startRow;
             }
 
+            if (direction == "N")
+            {
+                direction = startRow == plotRows.Count ? "W" : "O";
+                plotRows = ListExtensions.Transpose(plotRows);
+                startRow = startCol == 1 ? 1 : plotRows.Count;
+            }
+
+
             if (startRow == plotRows.Count)
                 plotRows.Reverse();
 
