@@ -37,7 +37,6 @@ namespace Harvester.Domain
                 startRow = startCol == 1 ? 1 : plotRows.Count;
             }
 
-
             if (startRow == plotRows.Count)
                 plotRows.Reverse();
 
