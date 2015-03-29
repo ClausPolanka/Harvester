@@ -30,6 +30,25 @@ namespace Harvester.Domain
             }
             return outer;
         }
+        
+        public static List<List<int>> Make_first_and_last_row_successors(List<List<int>> lists)
+        {
+            var reordered = new List<List<int>>();
+
+            while (lists.Any())
+            {
+                reordered.Add(lists.First().ToList());
+                lists.RemoveAt(lists.IndexOf(lists.First()));
+
+                if (lists.Count > 1)
+                {
+                    reordered.Add(lists.Last().ToList());
+                    lists.RemoveAt(lists.IndexOf(lists.Last()));
+                }
+            }
+
+            return reordered;
+        }
 
         public static string JoinWithBlank(List<List<int>> plotRows)
         {
