@@ -138,7 +138,18 @@ namespace Harvester.Domain.Test
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
+        //  → 1*  2   3   4
+        // →  5   6   7   8
+        //    9  10  11  12  ←
+        //   13  14  15  16 ←
+        // → 17  18  19  20
         [TestCase(5, 4, 1, 1, OST, SERPENTINE, 2, "1 5 2 6 3 7 4 8 16 12 15 11 14 10 13 9 17 18 19 20")]
+        
+        //     1   2   3   4  ←
+        //     5   6   7   8 ←
+        // →   9  10  11  12
+        //  → 13* 14  15  16
+        // →  17  18  19  20
         [TestCase(5, 4, 4, 1, OST, CIRCULAR, 2, "13 17 14 18 15 19 16 20 8 4 7 3 6 2 5 1 9 10 11 12")]
         public void Level_5_spec_examples(
             int rows,
