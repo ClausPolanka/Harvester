@@ -54,5 +54,34 @@ namespace Harvester.Domain
         {
             return String.Join(" ", plotRows.SelectMany(row => row));
         }
+
+        public static List<List<int>> MergeTwoRows(this List<List<int>> lists)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count > 1)
+            {
+                mergedLists.Add(Merge(lists.First(), lists[1]));
+                lists.RemoveAt(0);
+                lists.RemoveAt(0);
+            }
+
+            if (lists.Any()) mergedLists.Add(lists.Last());
+
+            return mergedLists;
+        }
+
+        public static List<int> Merge(List<int> first, List<int> second)
+        {
+            var list = new List<int>();
+
+            for (var i = 0; i < first.Count; i++)
+            {
+                list.Add(first[i]);
+                list.Add(second[i]);
+            }
+
+            return list;
+        }
     }
 }

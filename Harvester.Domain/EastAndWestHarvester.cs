@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Harvester.Domain
 {
     public class EastAndWestHarvester : HarvesterDirection
@@ -20,6 +23,8 @@ namespace Harvester.Domain
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
+            //if (width == 2)
+            //    plotRows = plotRows.MergeTwoRows();
             return harvesterMode.Harvest(startRow, plotRows, direction);
         }
     }

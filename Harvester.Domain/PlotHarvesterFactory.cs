@@ -12,12 +12,14 @@ namespace Harvester.Domain
         private readonly int rows;
         private readonly int cols;
         private readonly string direction;
+        private readonly int width;
 
-        public PlotHarvesterFactory(int rows, int cols, string direction = EAST)
+        public PlotHarvesterFactory(int rows, int cols, string direction = EAST, int width = 1)
         {
             this.rows = rows;
             this.cols = cols;
             this.direction = direction;
+            this.width = width;
         }
 
         public HarvesterDirection Create(string mode = SERPENTINE)
@@ -86,7 +88,7 @@ namespace Harvester.Domain
                 nrOfRows, 
                 nrOfCols, 
                 direction, 
-                width: 1, 
+                width, 
                 harvesterMode: new SerpentineHarvester());
         }
     }

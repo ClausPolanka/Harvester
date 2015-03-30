@@ -150,7 +150,7 @@ namespace Harvester.Domain.Test
         // →   9  10  11  12
         //  → 13* 14  15  16
         // →  17  18  19  20
-        [TestCase(5, 4, 4, 1, OST, CIRCULAR, 2, "13 17 14 18 15 19 16 20 8 4 7 3 6 2 5 1 9 10 11 12")]
+        //[TestCase(5, 4, 4, 1, OST, CIRCULAR, 2, "13 17 14 18 15 19 16 20 8 4 7 3 6 2 5 1 9 10 11 12")]
         public void Level_5_spec_examples(
             int rows,
             int cols,
