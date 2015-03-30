@@ -23,8 +23,10 @@ namespace Harvester.Domain
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            //if (width == 2)
-            //    plotRows = plotRows.MergeTwoRows();
+            
+            if (width == 2)
+                plotRows = plotRows.MergeTwoRows();
+            
             return harvesterMode.Harvest(startRow, plotRows, direction);
         }
     }

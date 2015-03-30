@@ -161,7 +161,7 @@ namespace Harvester.Domain.Test
             int width,
             string expected)
         {
-            var sut = new PlotHarvesterFactory(rows, cols, direction).Create(mode);
+            var sut = new PlotHarvesterFactory(rows, cols, direction, width: 2).Create(mode);
 
             var actual = sut.Harvest(startRow, startCol);
 
