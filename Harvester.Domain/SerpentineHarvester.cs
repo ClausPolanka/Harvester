@@ -1,24 +1,16 @@
+using System.Collections.Generic;
+
 namespace Harvester.Domain
 {
-    public class SerpentineHarvester : PlotHarvester
+    public class SerpentineHarvester : HarvesterMode
     {
-        private readonly int rows;
-        private readonly int cols;
-        private string direction;
-        private readonly int width;
+        private HarvesterLogic logic = new HarvesterLogic();
 
-        public SerpentineHarvester(int rows, int cols, string direction, int width)
+        public string Harvest(int startRow, List<List<int>> plotRows, string direction)
         {
-            this.rows = rows;
-            this.cols = cols;
-            this.direction = direction;
-            this.width = width;
-        }
-
-        public string Harvest(int startRow, int startCol)
-        {
-            var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            return new GeneralSerpentineHarvester().Harvest(startRow, plotRows, direction);
+            logic.Make_first_row_always_the_start_row(startRow, plotRows);
+            logic.Reverse_necessary_plot_rows(plotRows, direction);
+            return plotRows.JoinWithBlank();
         }
     }
 }

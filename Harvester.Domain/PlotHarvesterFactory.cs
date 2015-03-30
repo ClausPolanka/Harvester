@@ -4,57 +4,90 @@ namespace Harvester.Domain
     {
         public const string SERPENTINE = "S";
         public const string CIRCULAR = "Z";
+        
+        private const string SOUTH = "S";
+        private const string EAST = "O";
+        private const string NORTH = "N";
 
         private readonly int rows;
         private readonly int cols;
         private readonly string direction;
 
-        public PlotHarvesterFactory(int rows, int cols, string direction = "O")
+        public PlotHarvesterFactory(int rows, int cols, string direction = EAST)
         {
             this.rows = rows;
             this.cols = cols;
             this.direction = direction;
         }
 
-        public PlotHarvester Create(string mode = SERPENTINE)
+        public HarvesterDirection Create(string mode = SERPENTINE)
         {
-            PlotHarvester sut;
             if (mode == CIRCULAR)
-                sut = CreateCircular(rows, cols, direction);
+                return CreateCircular(rows, cols, direction);
             else
-                sut = CreateSerpentine(rows, cols, direction);
-            return sut;
+                return CreateSerpentine(rows, cols, direction);
+
         }
 
-        public PlotHarvester CreateCircular(string mode = SERPENTINE)
+        public HarvesterDirection CreateCircular(string mode = SERPENTINE)
         {
             return CreateCircular(rows, cols, direction);
         }
 
-        public PlotHarvester CreateCircular(int nrOfRows, int nrOfCols, string direction)
+        public HarvesterDirection CreateCircular(int nrOfRows, int nrOfCols, string direction)
         {
-            if (direction == "S")
-                return new SouthHarvester(nrOfRows, nrOfCols, width: 1, generalHarvester: new CircularHarvester());
-            if (direction == "N")
-                return new NorthHarvester(nrOfRows, nrOfCols, width: 1, generalHarvester: new CircularHarvester());
+            if (direction == SOUTH)
+            {
+                return new SouthHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    width: 1, 
+                    harvesterMode: new CircularHarvester());
+                
+            }
+            if (direction == NORTH)
+            {
+                return new NorthHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    width: 1, 
+                    generalHarvester: new CircularHarvester());
+                
+            }
 
-            return new CircularEastAndWestHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            return new EastAndWestHarvester(
+                nrOfRows, 
+                nrOfCols, 
+                direction, 
+                width: 1, 
+                harvesterMode: new CircularHarvester());
         }
 
-        public PlotHarvester CreateSerpentine(int nrOfRows, int nrOfCols, string direction)
+        public HarvesterDirection CreateSerpentine(int nrOfRows, int nrOfCols, string direction)
         {
-            if (direction == "S")
+            if (direction == SOUTH)
             {
-                return new SouthHarvester(nrOfRows, nrOfCols, width: 1,
-                    generalHarvester: new GeneralSerpentineHarvester());
+                return new SouthHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    width: 1,
+                    harvesterMode: new SerpentineHarvester());
             }
-            if (direction == "N")
+            if (direction == NORTH)
             {
-                return new NorthHarvester(nrOfRows, nrOfCols, width: 1,
-                    generalHarvester: new GeneralSerpentineHarvester());
+                return new NorthHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    width: 1,
+                    generalHarvester: new SerpentineHarvester());
             }
 
-            return new SerpentineHarvester(nrOfRows, nrOfCols, direction, width: 1);
+            return new EastAndWestHarvester(
+                nrOfRows, 
+                nrOfCols, 
+                direction, 
+                width: 1, 
+                harvesterMode: new SerpentineHarvester());
         }
     }
 }

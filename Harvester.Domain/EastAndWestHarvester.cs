@@ -1,27 +1,26 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Harvester.Domain
 {
-    public class CircularEastAndWestHarvester : PlotHarvester
+    public class EastAndWestHarvester : HarvesterDirection
     {
         private readonly int rows;
         private readonly int cols;
         private string direction;
         private readonly int width;
+        private HarvesterMode harvesterMode;
 
-        public CircularEastAndWestHarvester(int rows, int cols, string direction, int width)
+        public EastAndWestHarvester(int rows, int cols, string direction, int width, HarvesterMode harvesterMode)
         {
             this.rows = rows;
             this.cols = cols;
             this.direction = direction;
             this.width = width;
+            this.harvesterMode = harvesterMode;
         }
 
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            return new CircularHarvester().Harvest(startRow, plotRows, direction);
+            return harvesterMode.Harvest(startRow, plotRows, direction);
         }
     }
 }

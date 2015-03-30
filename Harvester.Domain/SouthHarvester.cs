@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace Harvester.Domain
 {
-    public class SouthHarvester : PlotHarvester
+    public class SouthHarvester : HarvesterDirection
     {
         private readonly int rows;
         private readonly int cols;
         private readonly int width;
-        private GeneralPlotHarvester generalHarvester;
+        private HarvesterMode harvesterMode;
 
-        public SouthHarvester(int rows, int cols, int width, GeneralPlotHarvester generalHarvester)
+        public SouthHarvester(int rows, int cols, int width, HarvesterMode harvesterMode)
         {
             this.rows = rows;
             this.cols = cols;
             this.width = width;
-            this.generalHarvester = generalHarvester;
+            this.harvesterMode = harvesterMode;
         }
 
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreateTransposedPlotRows(rows, cols);
             var newStartRow = startCol == cols ? cols : startRow;
-            return generalHarvester.Harvest(newStartRow, plotRows, direction: "O");
+            return harvesterMode.Harvest(newStartRow, plotRows, direction: "O");
         }
     }
 }

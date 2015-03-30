@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Harvester.Domain
 {
-    public class NorthHarvester : PlotHarvester
+    public class NorthHarvester : HarvesterDirection
     {
         private readonly int rows;
         private readonly int cols;
         private readonly int width;
-        private GeneralPlotHarvester generalHarvester;
+        private HarvesterMode generalHarvester;
 
-        public NorthHarvester(int rows, int cols, int width, GeneralPlotHarvester generalHarvester)
+        public NorthHarvester(int rows, int cols, int width, HarvesterMode generalHarvester)
         {
             this.rows = rows;
             this.cols = cols;

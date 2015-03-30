@@ -6,7 +6,7 @@ namespace Harvester.Domain
 {
     public static class ListExtensions
     {
-        public static void ReverseEverySecondElementIn<T>(List<List<T>> lists)
+        public static void ReverseEverySecondElementIn<T>(this List<List<T>> lists)
         {
             lists.ForEach(elem =>
             {
@@ -17,7 +17,7 @@ namespace Harvester.Domain
             });
         }
 
-        public static List<List<T>> Transpose<T>(List<List<T>> lists)
+        public static List<List<T>> Transpose<T>(this List<List<T>> lists)
         {
             var longest = lists.Any() ? lists.Max(l => l.Count) : 0;
             List<List<T>> outer = new List<List<T>>(longest);
@@ -31,7 +31,7 @@ namespace Harvester.Domain
             return outer;
         }
         
-        public static List<List<int>> Make_first_and_last_row_successors(List<List<int>> lists)
+        public static List<List<int>> Make_first_and_last_row_successors(this List<List<int>> lists)
         {
             var reordered = new List<List<int>>();
 
@@ -50,7 +50,7 @@ namespace Harvester.Domain
             return reordered;
         }
 
-        public static string JoinWithBlank(List<List<int>> plotRows)
+        public static string JoinWithBlank(this List<List<int>> plotRows)
         {
             return String.Join(" ", plotRows.SelectMany(row => row));
         }

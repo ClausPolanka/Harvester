@@ -39,17 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularEastAndWestHarvester.cs" />
     <Compile Include="CircularHarvester.cs" />
     <Compile Include="NorthHarvester.cs" />
-    <Compile Include="SerpentineHarvester.cs" />
+    <Compile Include="EastAndWestHarvester.cs" />
     <Compile Include="SouthHarvester.cs" />
-    <Compile Include="GeneralHarvester.cs" />
-    <Compile Include="GeneralPlotHarvester.cs" />
-    <Compile Include="GeneralSerpentineHarvester.cs" />
+    <Compile Include="HarvesterLogic.cs" />
+    <Compile Include="HarvesterMode.cs" />
+    <Compile Include="SerpentineHarvester.cs" />
     <Compile Include="ListExtensions.cs" />
     <Compile Include="PlotHarvesterFactory.cs" />
-    <Compile Include="PlotHarvester.cs" />
+    <Compile Include="HarvesterDirection.cs" />
     <Compile Include="PlotRowCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

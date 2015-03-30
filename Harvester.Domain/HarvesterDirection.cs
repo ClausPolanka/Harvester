@@ -1,6 +1,6 @@
 namespace Harvester.Domain
 {
-    public interface PlotHarvester
+    public interface HarvesterDirection
     {
         string Harvest(int startRow, int startCol);
     }

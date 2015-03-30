@@ -2,7 +2,7 @@
 
 namespace Harvester.Domain
 {
-    public interface GeneralPlotHarvester
+    public interface HarvesterMode
     {
         string Harvest(int startRow, List<List<int>> plotRows, string direction);
     }
