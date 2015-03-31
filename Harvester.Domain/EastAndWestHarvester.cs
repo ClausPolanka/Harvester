@@ -30,7 +30,8 @@ namespace Harvester.Domain
             }
             else if (width == 2 && direction == "W")
             {
-                plotRows = plotRows.Merge_two_rows_starting_right();
+                plotRows.ForEach(row => row.Reverse());
+                plotRows = plotRows.Merge_two_rows_starting_left();
                 direction = "O";
             }
             
