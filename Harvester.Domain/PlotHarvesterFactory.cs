@@ -80,7 +80,7 @@ namespace Harvester.Domain
                 return new SouthHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width: 1,
+                    width,
                     harvesterMode: new SerpentineHarvester());
             }
             if (direction == NORTH)
@@ -88,7 +88,7 @@ namespace Harvester.Domain
                 return new NorthHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width: 1,
+                    width,
                     generalHarvester: new SerpentineHarvester());
             }
             if (direction == WEST)
