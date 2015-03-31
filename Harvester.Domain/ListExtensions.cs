@@ -103,6 +103,22 @@ namespace Harvester.Domain
             return mergedLists;
         }
 
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed(this List<List<int>> lists)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count > 1)
+            {
+                mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
+                lists.RemoveLast();
+                lists.RemoveLast();
+            }
+
+            if (lists.Any()) mergedLists.Add(lists.First());
+
+            return mergedLists;
+        }
+
         public static void RemoveLast(this List<List<int>> lists)
         {
             lists.RemoveAt(lists.Count - 1);

@@ -27,7 +27,12 @@ namespace Harvester.Domain
             var newStartRow = startCol == cols ? cols : startRow;
 
             if (width == 2)
-                plotRows = plotRows.Merge_two_rows_starting_top_left_reversed();
+            {
+                if (startCol == 1)
+                    plotRows = plotRows.Merge_two_rows_starting_top_left_reversed();
+                else
+                    plotRows = plotRows.Merge_two_rows_starting_bottom_left_reversed();
+            }
 
             return harvesterMode.Harvest(newStartRow, plotRows, direction: "O");
         }
