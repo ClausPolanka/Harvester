@@ -1,2 +1,2 @@
 # TODOs
-South- and North-Harvester will be adjusted to East- and West-Harvester. Current neccessary logic for adjustment is in seperate class for each direction (north and south). Mayb logic can be moved to Factory so that classes could be deleted.
+South- and North-Harvester will be adjusted to East- and West-Harvester. Current neccessary logic for adjustment is in seperate class for each direction (north and south). Maybe logic can be moved to Factory so that classes could be deleted.
