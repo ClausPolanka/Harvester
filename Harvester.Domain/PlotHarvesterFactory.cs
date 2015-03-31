@@ -7,6 +7,7 @@ namespace Harvester.Domain
         
         private const string SOUTH = "S";
         private const string EAST = "O";
+        private const string WEST = "W";
         private const string NORTH = "N";
 
         private readonly int rows;
@@ -56,11 +57,18 @@ namespace Harvester.Domain
                     generalHarvester: new CircularHarvester());
                 
             }
-
-            return new EastAndWestHarvester(
+            if (direction == WEST)
+            {
+                return new WestHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    width: 1, 
+                    harvesterMode: new CircularHarvester());
+                
+            }
+            return new EastHarvester(
                 nrOfRows, 
                 nrOfCols, 
-                direction, 
                 width: 1, 
                 harvesterMode: new CircularHarvester());
         }
@@ -83,13 +91,20 @@ namespace Harvester.Domain
                     width: 1,
                     generalHarvester: new SerpentineHarvester());
             }
-
-            return new EastAndWestHarvester(
-                nrOfRows, 
-                nrOfCols, 
-                direction, 
-                width, 
+            if (direction == WEST)
+            {
+                return new WestHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    width,
+                    harvesterMode: new SerpentineHarvester());
+            }
+            return new EastHarvester(
+                nrOfRows,
+                nrOfCols,
+                width,
                 harvesterMode: new SerpentineHarvester());
+            
         }
     }
 }
