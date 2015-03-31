@@ -23,18 +23,19 @@ namespace Harvester.Domain
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
 
             if (width == 2)
-            {
-                if (startRow == 1)
-                {
-                    plotRows = plotRows.Merge_two_rows_starting_top_left();
-                }
-                else
-                {
-                    plotRows = plotRows.Merge_two_rows_starting_bottom_left();
-                }
-            }
+                plotRows = MergePlotRows(startRow, plotRows);
 
             return harvesterMode.Harvest(startRow, plotRows, "O");
+        }
+
+        private static List<List<int>> MergePlotRows(int startRow, List<List<int>> plotRows)
+        {
+            if (startRow == 1)
+                plotRows = plotRows.Merge_two_rows_starting_top_left();
+            else
+                plotRows = plotRows.Merge_two_rows_starting_bottom_left();
+
+            return plotRows;
         }
     }
 }
