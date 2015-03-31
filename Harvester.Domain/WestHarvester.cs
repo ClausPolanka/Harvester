@@ -20,7 +20,7 @@ namespace Harvester.Domain
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            plotRows = new PlotRowMerger(width).Merge(startRow, plotRows);
+            plotRows = new EastAndWestPlotRowMerger(width).Merge(startRow, plotRows);
             return harvesterMode.Harvest(startRow, plotRows, "W");
         }
     }

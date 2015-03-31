@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace Harvester.Domain
 {
-    public class PlotRowMerger
+    public class EastAndWestPlotRowMerger
     {
         private readonly int width;
 
-        public PlotRowMerger(int width)
+        public EastAndWestPlotRowMerger(int width)
         {
             this.width = width;
         }
