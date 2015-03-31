@@ -188,6 +188,21 @@ namespace Harvester.Domain.UnitTest
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
 
+        [TestCase(1, 1, "1 3 2 4 8 6 7 5")]
+        public void Even_number_of_rows_and_harvester_width_of_two_going_east(int startRow, int startCol, string expected)
+        {
+            // → 1*  2
+            // → 3   4
+            //   5   6
+            //   7   8
+
+            var sut = new PlotHarvesterFactory(rows: 4, cols: 2, width: 2).Create();
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
         [TestCase(1, 1, "1 3 2 4 8 6 7 5 9 10")]
         public void Odd_number_of_rows_and_harvester_width_of_two_going_east(int startRow, int startCol, string expected)
         {
@@ -252,6 +267,24 @@ namespace Harvester.Domain.UnitTest
             // 9 10  ←
 
             var sut = new PlotHarvesterFactory(rows: 5, cols: 2, width: 2, direction: "W").Create();
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        [TestCase(4, 2, "8 6 7 5 1 3 2 4")]
+        public void Even_number_of_rows_and_harvester_width_of_two_going_west_starting_in_last_row(
+            int startRow, 
+            int startCol, 
+            string expected)
+        {
+            // 1  2
+            // 3  4
+            // 5  6*  ←
+            // 7  8  ←
+
+            var sut = new PlotHarvesterFactory(rows: 4, cols: 2, width: 2, direction: "W").Create();
 
             var actual = sut.Harvest(startRow, startCol);
 
