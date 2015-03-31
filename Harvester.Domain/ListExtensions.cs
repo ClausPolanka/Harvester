@@ -55,7 +55,7 @@ namespace Harvester.Domain
             return String.Join(" ", plotRows.SelectMany(row => row));
         }
 
-        public static List<List<int>> Merge_two_rows_starting_left(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_top_left(this List<List<int>> lists)
         {
             var mergedLists = new List<List<int>>();
 
@@ -69,6 +69,32 @@ namespace Harvester.Domain
             if (lists.Any()) mergedLists.Add(lists.Last());
 
             return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left(this List<List<int>> lists)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count > 1)
+            {
+                mergedLists.Add(Merge(lists.SecondToLast(), lists.Last()));
+                lists.RemoveLast();
+                lists.RemoveLast();
+            }
+
+            if (lists.Any()) mergedLists.Add(lists.First());
+
+            return mergedLists;
+        }
+
+        public static void RemoveLast(this List<List<int>> lists)
+        {
+            lists.RemoveAt(lists.Count - 1);
+        }
+
+        public static List<int> SecondToLast(this List<List<int>> lists)
+        {
+            return lists[(lists.IndexOf(lists.Last()) - 1)];
         }
 
         public static List<int> Merge(List<int> first, List<int> second)
