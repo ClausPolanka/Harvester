@@ -213,7 +213,7 @@ namespace Harvester.Domain.UnitTest
             // 7  8
             // 9 10
 
-            var sut = new PlotHarvesterFactory(rows: 5, cols: 2, width: 2).Create();
+            var sut = new PlotHarvesterFactory(rows: 5, cols: 2, width: 2, direction: "W").Create();
 
             var actual = sut.Harvest(startRow, startCol);
 

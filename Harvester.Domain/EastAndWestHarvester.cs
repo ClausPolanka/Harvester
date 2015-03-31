@@ -24,8 +24,15 @@ namespace Harvester.Domain
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
             
-            if (width == 2)
-                plotRows = plotRows.MergeTwoRows();
+            if (width == 2 && direction == "O")
+            {
+                plotRows = plotRows.Merge_two_rows_starting_left();
+            }
+            else if (width == 2 && direction == "W")
+            {
+                plotRows = plotRows.Merge_two_rows_starting_right();
+                direction = "O";
+            }
             
             return harvesterMode.Harvest(startRow, plotRows, direction);
         }

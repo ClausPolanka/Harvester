@@ -55,7 +55,13 @@ namespace Harvester.Domain
             return String.Join(" ", plotRows.SelectMany(row => row));
         }
 
-        public static List<List<int>> MergeTwoRows(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_right(this List<List<int>> lists)
+        {
+            lists.ForEach(l => l.Reverse());
+            return lists.Merge_two_rows_starting_left();
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_left(this List<List<int>> lists)
         {
             var mergedLists = new List<List<int>>();
 
