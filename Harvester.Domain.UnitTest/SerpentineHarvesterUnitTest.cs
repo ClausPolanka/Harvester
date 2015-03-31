@@ -325,5 +325,39 @@ namespace Harvester.Domain.UnitTest
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
+        
+        [TestCase(2, 1, "6 7 1 2 4 3 9 8 10 5")]
+        public void Odd_number_of_cols_and_harvester_width_of_two_going_north_starting_bottom_left(
+            int startRow, 
+            int startCol, 
+            string expected)
+        {
+            // 1  2  3  4  5
+            // 6* 7  8  9 10
+            // ↑  ↑
+
+            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "N", width: 2).Create();
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        [TestCase(2, 4, "9 10 4 5 3 2 8 7 6 1")]
+        public void Odd_number_of_cols_and_harvester_width_of_two_going_north_starting_bottom_second_to_end(
+            int startRow, 
+            int startCol, 
+            string expected)
+        {
+            // 1  2  3  4   5
+            // 6  7  8  9* 10
+            //          ↑   ↑
+            
+            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "N", width: 2).Create();
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
     }
 }
