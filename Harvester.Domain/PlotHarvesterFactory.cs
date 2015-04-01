@@ -32,7 +32,7 @@ namespace Harvester.Domain
 
         }
 
-        public HarvesterDirection CreateCircular(string mode = SERPENTINE)
+        public HarvesterDirection CreateCircular()
         {
             return CreateCircular(rows, cols, direction);
         }
