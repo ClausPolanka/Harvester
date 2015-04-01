@@ -144,12 +144,12 @@ namespace Harvester.Domain.UnitTest
         //  → 10  11 12
         // →  13* 14 15
         [TestCase(5, 3, 5, 1, "O", "10 13 11 14 12 15 6 3 5 2 4 1 7 8 9")]
-        //   1  2  3
-        //   4  5  6
-        //   7  8  9
-        //  10 11 12
+        //   1  2  3  
+        //   4  5  6  
+        //   7  8  9  
+        //  10 11 12   ←
         //  13 14 15* ←
-        //[TestCase(5, 3, 5, 3, "W", "15 14 13 1 2 3 12 11 10 4 5 6 9 8 7")]
+        [TestCase(5, 3, 5, 3, "W", "15 12 14 11 13 10 1 4 2 5 3 6 9 8 7")]
         public void Odd_number_of_rows_east_and_west_and_width_of_two(
             int nrOfRows,
             int nrOfCols,
