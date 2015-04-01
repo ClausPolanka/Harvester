@@ -44,7 +44,7 @@ namespace Harvester.Domain
                 return new SouthHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width: 1, 
+                    width, 
                     harvesterMode: new CircularHarvester());
                 
             }
@@ -53,7 +53,7 @@ namespace Harvester.Domain
                 return new NorthHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width: 1, 
+                    width, 
                     generalHarvester: new CircularHarvester());
                 
             }
@@ -62,15 +62,15 @@ namespace Harvester.Domain
                 return new WestHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width: 1, 
-                    harvesterMode: new CircularHarvester());
+                    harvesterMode: new CircularHarvester(), 
+                    plotRowMerger: new EastAndWestCircularPlotRowMerger(width));
                 
             }
             return new EastHarvester(
                 nrOfRows, 
                 nrOfCols, 
-                width: 1, 
-                harvesterMode: new CircularHarvester());
+                harvesterMode: new CircularHarvester(), 
+                plotRowMerger: new EastAndWestCircularPlotRowMerger(width));
         }
 
         public HarvesterDirection CreateSerpentine(int nrOfRows, int nrOfCols, string direction)
@@ -95,15 +95,15 @@ namespace Harvester.Domain
             {
                 return new WestHarvester(
                     nrOfRows, 
-                    nrOfCols, 
-                    width,
-                    harvesterMode: new SerpentineHarvester());
+                    nrOfCols,
+                    harvesterMode: new SerpentineHarvester(),
+                    plotRowMerger: new EastAndWestSerpentinePlotRowMerger(width));
             }
             return new EastHarvester(
                 nrOfRows,
                 nrOfCols,
-                width,
-                harvesterMode: new SerpentineHarvester());
+                harvesterMode: new SerpentineHarvester(), 
+                plotRowMerger: new EastAndWestSerpentinePlotRowMerger(width));
             
         }
     }

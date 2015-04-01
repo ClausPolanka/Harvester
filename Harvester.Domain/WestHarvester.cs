@@ -6,21 +6,21 @@ namespace Harvester.Domain
     {
         private readonly int rows;
         private readonly int cols;
-        private readonly int width;
         private HarvesterMode harvesterMode;
+        private EastAndWestPlotRowMerger plotRowMerger;
 
-        public WestHarvester(int rows, int cols, int width, HarvesterMode harvesterMode)
+        public WestHarvester(int rows, int cols, HarvesterMode harvesterMode, EastAndWestPlotRowMerger plotRowMerger)
         {
             this.rows = rows;
             this.cols = cols;
-            this.width = width;
             this.harvesterMode = harvesterMode;
+            this.plotRowMerger = plotRowMerger;
         }
 
         public string Harvest(int startRow, int startCol)
         {
             var plotRows = new PlotRowCreator().CreatePlotRows(rows, cols);
-            plotRows = new EastAndWestPlotRowMerger(width).Merge(startRow, plotRows);
+            plotRows = plotRowMerger.Merge(startRow, plotRows);
             return harvesterMode.Harvest(startRow, plotRows, "W");
         }
     }
