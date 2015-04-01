@@ -44,8 +44,8 @@ namespace Harvester.Domain
                 return new SouthHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width, 
-                    harvesterMode: new CircularHarvester());
+                    harvesterMode: new CircularHarvester(), 
+                    plotRowMerger: new NorthAndSouthCircularPlotRowMerger(width));
                 
             }
             if (direction == NORTH)
@@ -53,8 +53,8 @@ namespace Harvester.Domain
                 return new NorthHarvester(
                     nrOfRows, 
                     nrOfCols, 
-                    width, 
-                    generalHarvester: new CircularHarvester());
+                    generalHarvester: new CircularHarvester(), 
+                    plotRowMerger: new NorthAndSouthCircularPlotRowMerger(width));
                 
             }
             if (direction == WEST)
@@ -79,17 +79,17 @@ namespace Harvester.Domain
             {
                 return new SouthHarvester(
                     nrOfRows, 
-                    nrOfCols, 
-                    width,
-                    harvesterMode: new SerpentineHarvester());
+                    nrOfCols,
+                    harvesterMode: new SerpentineHarvester(), 
+                    plotRowMerger: new NorthAndSouthSerpentinePlotRowMerger(width));
             }
             if (direction == NORTH)
             {
                 return new NorthHarvester(
                     nrOfRows, 
-                    nrOfCols, 
-                    width,
-                    generalHarvester: new SerpentineHarvester());
+                    nrOfCols,
+                    generalHarvester: new SerpentineHarvester(), 
+                    plotRowMerger: new NorthAndSouthSerpentinePlotRowMerger(width));
             }
             if (direction == WEST)
             {

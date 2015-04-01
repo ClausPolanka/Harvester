@@ -110,6 +110,29 @@ namespace Harvester.Domain
             return mergedLists;
         }
 
+        public static List<List<int>> Merge_two_rows_starting_top_left_reversed_outside_in(this List<List<int>> lists)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count > 1)
+            {
+                mergedLists.Add(ReversedMerge(lists.First(), lists[1]));
+                lists.RemoveAt(0);
+                lists.RemoveAt(0);
+                mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
+                lists.RemoveLast();
+                lists.RemoveLast();
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
+                mergedLists.Insert(middle, lists.Last());
+            }
+
+            return mergedLists;
+        }
+
         public static List<List<int>> Merge_two_rows_starting_bottom_left(this List<List<int>> lists)
         {
             var mergedLists = new List<List<int>>();
@@ -150,6 +173,29 @@ namespace Harvester.Domain
         }
 
         public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed(this List<List<int>> lists)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count > 1)
+            {
+                mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
+                lists.RemoveLast();
+                lists.RemoveLast();
+                mergedLists.Add(ReversedMerge(lists.First(), lists[1]));
+                lists.RemoveAt(0);
+                lists.RemoveAt(0);
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
+                mergedLists.Insert(middle, lists.Last());
+            }
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed_outside_in(this List<List<int>> lists)
         {
             var mergedLists = new List<List<int>>();
 

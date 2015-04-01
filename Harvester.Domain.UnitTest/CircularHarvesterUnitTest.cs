@@ -168,7 +168,13 @@ namespace Harvester.Domain.UnitTest
         // ↓  ↓
         // 1* 2 3 4 5
         // 6  7 8 9 10
-        [TestCase(5, 3, 1, 1, "S", "2 1 7 6 9 10 4 5 3 8")]
+
+        // →  1* 6
+        //  → 2  7
+        //    3  8
+        //    4  9
+        //    5 10
+        [TestCase(2, 5, 1, 1, "S", "2 1 7 6 9 10 4 5 3 8")]
         
         public void Odd_number_of_cols_north_and_south_and_a_width_of_two(
             int nrOfRows,
