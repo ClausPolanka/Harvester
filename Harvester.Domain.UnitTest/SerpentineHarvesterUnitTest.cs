@@ -284,7 +284,7 @@ namespace Harvester.Domain.UnitTest
         [TestCase(4, 2, 4, 2, "8 6 7 5 1 3 2 4")]
         //  1  2  3  4
         //  5  6  7  8
-        //  9 10 11 12   ←
+        //  9 10 11 12 
         // 13 14 15 16* ←
         [TestCase(4, 4, 4, 4, "16 12 15 11 14 10 13 9 1 5 2 6 3 7 4 8")]
         public void Even_number_of_rows_and_harvester_width_of_two_going_west_starting_in_last_row(

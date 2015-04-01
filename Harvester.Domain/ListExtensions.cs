@@ -20,12 +20,14 @@ namespace Harvester.Domain
         public static List<List<T>> Transpose<T>(this List<List<T>> lists)
         {
             var longest = lists.Any() ? lists.Max(l => l.Count) : 0;
-            List<List<T>> outer = new List<List<T>>(longest);
-            for (int i = 0; i < longest; i++)
+            var outer = new List<List<T>>(longest);
+            
+            for (var i = 0; i < longest; i++)
                 outer.Add(new List<T>(lists.Count));
-            for (int j = 0; j < lists.Count; j++)
+            
+            for (var j = 0; j < lists.Count; j++)
             {
-                for (int i = 0; i < longest; i++)
+                for (var i = 0; i < longest; i++)
                     outer[i].Add(lists[j].Count > i ? lists[j][i] : default(T));
             }
             return outer;
@@ -73,25 +75,27 @@ namespace Harvester.Domain
         
         public static List<List<int>> Merge_two_rows_starting_top_left_outside_in(this List<List<int>> lists)
         {
-            var mergedLists = new List<List<int>>();
-
+            var capacity = (int) Math.Ceiling(lists.Count / 2.0);
+            var mergedLists = new List<int>[capacity];
+            int startIndex = 0, endIndex = capacity-1;
+            
             while (lists.Count > 1)
             {
-                mergedLists.Add(Merge(lists.First(), lists[1]));
+                mergedLists[startIndex++] = Merge(lists.First(), lists[1]);
                 lists.RemoveAt(0);
                 lists.RemoveAt(0);
-                mergedLists.Add(Merge(lists.SecondToLast(), lists.Last()));
+                mergedLists[endIndex--] = Merge(lists.SecondToLast(), lists.Last());
                 lists.RemoveLast();
                 lists.RemoveLast();
             }
 
             if (lists.Any())
             {
-                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
-                mergedLists.Insert(middle, lists.Last());
+                var middle = (int) Math.Ceiling(capacity / 2.0) - 1;
+                mergedLists[middle] = lists.Last();
             }
 
-            return mergedLists;
+            return new List<List<int>>(mergedLists);
         }
 
         public static List<List<int>> Merge_two_rows_starting_top_left_reversed(this List<List<int>> lists)
@@ -112,25 +116,27 @@ namespace Harvester.Domain
 
         public static List<List<int>> Merge_two_rows_starting_top_left_reversed_outside_in(this List<List<int>> lists)
         {
-            var mergedLists = new List<List<int>>();
-
+            var capacity = (int) Math.Ceiling(lists.Count / 2.0);
+            var mergedLists = new List<int>[capacity];
+            int startIndex = 0, endIndex = capacity-1;
+            
             while (lists.Count > 1)
             {
-                mergedLists.Add(ReversedMerge(lists.First(), lists[1]));
+                mergedLists[startIndex++] = ReversedMerge(lists.First(), lists[1]);
                 lists.RemoveAt(0);
                 lists.RemoveAt(0);
-                mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
+                mergedLists[endIndex--] = ReversedMerge(lists.SecondToLast(), lists.Last());
                 lists.RemoveLast();
                 lists.RemoveLast();
             }
 
             if (lists.Any())
             {
-                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
-                mergedLists.Insert(middle, lists.Last());
+                var middle = (int) Math.Ceiling(capacity / 2.0) - 1;
+                mergedLists[middle] = lists.Last();
             }
 
-            return mergedLists;
+            return new List<List<int>>(mergedLists);
         }
 
         public static List<List<int>> Merge_two_rows_starting_bottom_left(this List<List<int>> lists)
