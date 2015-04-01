@@ -204,9 +204,16 @@ namespace Harvester.Domain
                 mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
                 lists.RemoveLast();
                 lists.RemoveLast();
+                mergedLists.Add(ReversedMerge(lists.First(), lists[1]));
+                lists.RemoveAt(0);
+                lists.RemoveAt(0);
             }
 
-            if (lists.Any()) mergedLists.Add(lists.First());
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
+                mergedLists.Insert(middle, lists.Last());
+            }
 
             return mergedLists;
         }
