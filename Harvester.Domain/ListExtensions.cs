@@ -68,7 +68,11 @@ namespace Harvester.Domain
                 lists.RemoveAt(0);
             }
 
-            if (lists.Any()) mergedLists.Add(lists.Last());
+            if (lists.Any())
+            {
+                var zeros = lists.Last().Select(element => 0).ToList();
+                mergedLists.Add(Merge(lists.Last(), zeros));
+            }
 
             return mergedLists;
         }
