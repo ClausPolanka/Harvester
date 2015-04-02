@@ -190,13 +190,7 @@ namespace Harvester.Domain.Test
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
-        
-        //  1  2  3  4 
-        //  5  6  7  8 
-        //  9 10 11 12 
-        // 13 14 15 16 
-        // >>17 18 19 20 
-        //    0  0  0  0
+
         [TestCase(5, 4, 1, 1, EAST, SERPENTINE, 2, "1 5 2 6 3 7 4 8 16 12 15 11 14 10 13 9 17 0 18 0 19 0 20 0")]
         public void Level_6_spec_examples(
             int rows,
@@ -211,13 +205,6 @@ namespace Harvester.Domain.Test
             var sut = new PlotHarvesterFactory(rows, cols, direction, width).Create(mode);
 
             var actual = sut.Harvest(startRow, startCol);
-
-            for (int i = 1; i <= (5 * 4); i++)
-            {
-                Console.Out.Write(i + " ");
-                if (i%4 == 0)
-                    Console.Out.WriteLine("");
-            }
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
