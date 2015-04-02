@@ -136,8 +136,9 @@ namespace Harvester.Domain
 
             if (lists.Any())
             {
-                var middle = (int) Math.Ceiling(capacity / 2.0) - 1;
-                mergedLists[middle] = lists.Last();
+                var middle = (int) Math.Ceiling(capacity/2.0) - 1;
+                var zeros = lists.Last().Select(s => 0).ToList();
+                mergedLists[middle] = ReversedMerge(zeros, lists.Last());
             }
 
             return new List<List<int>>(mergedLists);
@@ -154,7 +155,11 @@ namespace Harvester.Domain
                 lists.RemoveLast();
             }
 
-            if (lists.Any()) mergedLists.Add(lists.First());
+            if (lists.Any())
+            {
+                var zeros = lists.First().Select(s => 0).ToList();
+                mergedLists.Add(Merge(lists.First(), zeros));
+            }
 
             return mergedLists;
         }
@@ -194,7 +199,11 @@ namespace Harvester.Domain
                 lists.RemoveLast();
             }
 
-            if (lists.Any()) mergedLists.Add(lists.First());
+            if (lists.Any())
+            {
+                var zeros = lists.First().Select(s => 0).ToList();
+                mergedLists.Add(ReversedMerge(zeros, lists.First()));
+            }
 
             return mergedLists;
         }
