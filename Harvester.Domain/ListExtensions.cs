@@ -176,7 +176,8 @@ namespace Harvester.Domain
             if (lists.Any())
             {
                 var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
-                mergedLists.Insert(middle, lists.Last());
+                var zeros = lists.Last().Select(s => 0).ToList();
+                mergedLists.Insert(middle, Merge(lists.Last(), zeros));
             }
 
             return mergedLists;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -192,6 +193,7 @@ namespace Harvester.Domain.Test
         }
 
         [TestCase(5, 4, 1, 1, EAST, SERPENTINE, 2, "1 5 2 6 3 7 4 8 16 12 15 11 14 10 13 9 17 0 18 0 19 0 20 0")]
+        [TestCase(5, 4, 4, 1, EAST, CIRCULAR, 2, "13 17 14 18 15 19 16 20 8 4 7 3 6 2 5 1 9 0 10 0 11 0 12 0")]
         public void Level_6_spec_examples(
             int rows,
             int cols,
