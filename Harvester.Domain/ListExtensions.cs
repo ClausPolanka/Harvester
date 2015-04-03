@@ -149,9 +149,10 @@ namespace Harvester.Domain
         {
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 1)
+            while (lists.Count > 2)
             {
-                mergedLists.Add(Merge(lists.SecondToLast(), lists.Last()));
+                mergedLists.Add(Merge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last()));
+                lists.RemoveLast();
                 lists.RemoveLast();
                 lists.RemoveLast();
             }
@@ -159,7 +160,7 @@ namespace Harvester.Domain
             if (lists.Any())
             {
                 var zeros = lists.First().Select(s => 0).ToList();
-                mergedLists.Add(Merge(lists.First(), zeros));
+                mergedLists.Add(Merge(zeros, zeros, lists.First()));
             }
 
             return mergedLists;
