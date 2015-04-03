@@ -205,9 +205,10 @@ namespace Harvester.Domain
         {
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 1)
+            while (lists.Count > 2)
             {
-                mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
+                mergedLists.Add(ReversedMerge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last()));
+                lists.RemoveLast();
                 lists.RemoveLast();
                 lists.RemoveLast();
             }
