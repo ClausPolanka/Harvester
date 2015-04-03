@@ -61,9 +61,10 @@ namespace Harvester.Domain
         {
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 1)
+            while (lists.Count > 2)
             {
-                mergedLists.Add(Merge(lists.First(), lists[1]));
+                mergedLists.Add(Merge(lists.First(), lists[1], lists[2]));
+                lists.RemoveAt(0);
                 lists.RemoveAt(0);
                 lists.RemoveAt(0);
             }
@@ -71,7 +72,7 @@ namespace Harvester.Domain
             if (lists.Any())
             {
                 var zeros = lists.Last().Select(element => 0).ToList();
-                mergedLists.Add(Merge(lists.Last(), zeros));
+                mergedLists.Add(Merge(lists.SecondToLast(), lists.Last(), zeros));
             }
 
             return mergedLists;
@@ -239,6 +240,20 @@ namespace Harvester.Domain
         public static List<int> SecondToLast(this List<List<int>> lists)
         {
             return lists[(lists.IndexOf(lists.Last()) - 1)];
+        }
+
+        public static List<int> Merge(List<int> first, List<int> second, List<int> third)
+        {
+            var list = new List<int>();
+
+            for (var i = 0; i < first.Count; i++)
+            {
+                list.Add(first[i]);
+                list.Add(second[i]);
+                list.Add(third[i]);
+            }
+
+            return list;
         }
 
         public static List<int> Merge(List<int> first, List<int> second)
