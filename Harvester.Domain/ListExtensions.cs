@@ -121,16 +121,22 @@ namespace Harvester.Domain
 
         public static List<List<int>> Merge_two_rows_starting_top_left_reversed_outside_in(this List<List<int>> lists)
         {
-            var capacity = (int) Math.Ceiling(lists.Count / 2.0);
+            var capacity = (int) Math.Ceiling(lists.Count / 3.0);
             var mergedLists = new List<int>[capacity];
             int startIndex = 0, endIndex = capacity-1;
             
-            while (lists.Count > 1)
+            while (lists.Count > 2)
             {
-                mergedLists[startIndex++] = ReversedMerge(lists.First(), lists[1]);
+                mergedLists[startIndex++] = ReversedMerge(lists.First(), lists[1], lists[2]);
                 lists.RemoveAt(0);
                 lists.RemoveAt(0);
-                mergedLists[endIndex--] = ReversedMerge(lists.SecondToLast(), lists.Last());
+                lists.RemoveAt(0);
+
+                if (lists.Count <= 2)
+                    break;
+
+                mergedLists[endIndex--] = ReversedMerge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last());
+                lists.RemoveLast();
                 lists.RemoveLast();
                 lists.RemoveLast();
             }
@@ -281,6 +287,20 @@ namespace Harvester.Domain
 
             for (var i = 0; i < first.Count; i++)
             {
+                list.Add(second[i]);
+                list.Add(first[i]);
+            }
+
+            return list;
+        }
+        
+        public static List<int> ReversedMerge(List<int> first, List<int> second, List<int> third)
+        {
+            var list = new List<int>();
+
+            for (var i = 0; i < first.Count; i++)
+            {
+                list.Add(third[i]);
                 list.Add(second[i]);
                 list.Add(first[i]);
             }
