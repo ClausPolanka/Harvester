@@ -220,5 +220,23 @@ namespace Harvester.Domain.Test
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
         }
+        
+        [TestCase(5, 4, 1, 1, EAST, SERPENTINE, 3, "")]
+        public void Level_7_inputs(
+            int rows,
+            int cols,
+            int startRow,
+            int startCol,
+            string direction,
+            string mode,
+            int width,
+            string expected)
+        {
+            var sut = new PlotHarvesterFactory(rows, cols, direction, width).Create(mode);
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
     }
 }
