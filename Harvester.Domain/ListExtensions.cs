@@ -173,17 +173,17 @@ namespace Harvester.Domain
             return mergedLists;
         }
 
-        public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in(
+            this List<List<int>> lists,
+            int width)
         {
-            int width = 3; // TODO pass as arg.
-
             var mergedLists = new List<List<int>>();
 
             while (lists.Count >= width)
             {
                 var listsToMerge = AddListsToMergeStartingAtTheEnd(lists, width);
                 listsToMerge.Reverse();
-                
+
                 mergedLists.Add(Merge(listsToMerge));
 
                 for (var i = 0; i < width; i++)
@@ -192,7 +192,7 @@ namespace Harvester.Domain
                 if (lists.Count < width) break;
 
                 mergedLists.Add(Merge(ListsToMergeStartingAtTheBeginning(lists, width)));
-                
+
                 for (var i = 0; i < width; i++)
                     lists.RemoveAt(0);
             }
@@ -201,7 +201,16 @@ namespace Harvester.Domain
             {
                 var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
                 var zeros = lists.Last().Select(s => 0).ToList();
-                mergedLists.Insert(middle, Merge(zeros, lists.SecondToLast(), lists.Last())); // TODO use for loop
+
+                var toMerge = new List<List<int>>();
+                var nrOfZeros = width - lists.Count;
+                
+                for (var i = 0; i < nrOfZeros; i++)
+                    toMerge.Add(zeros);
+
+                toMerge.AddRange(lists);
+
+                mergedLists.Insert(middle, Merge(toMerge));
             }
 
             return mergedLists;
