@@ -175,16 +175,21 @@ namespace Harvester.Domain
 
         public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in(this List<List<int>> lists)
         {
+            int width = 3;
+
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 2)
+            while (lists.Count >= width)
             {
-                mergedLists.Add(Merge(lists[lists.IndexOf(lists.SecondToLast()) - 1], lists.SecondToLast(), lists.Last()));
-                lists.RemoveLast();
-                lists.RemoveLast();
-                lists.RemoveLast();
+                var listsToMerge = AddListsToMergeStartingAtTheEnd(lists, width);
+                listsToMerge.Reverse();
+                
+                mergedLists.Add(Merge(listsToMerge));
 
-                if (lists.Count <= 2) break;
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+
+                if (lists.Count < width) break;
 
                 mergedLists.Add(Merge(lists.First(), lists[1], lists[2]));
                 lists.RemoveAt(0);
@@ -202,33 +207,49 @@ namespace Harvester.Domain
             return mergedLists;
         }
 
-        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed(this List<List<int>> lists, int width)
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed(
+            this List<List<int>> lists,
+            int width)
         {
             var mergedLists = new List<List<int>>();
 
             while (lists.Count >= width)
             {
-                var toMerge = new List<List<int>>();
+                var listsToMerge = AddListsToMergeStartingAtTheEnd(lists, width);
 
-                for (var i = 1; i <= width; i++)
-                    toMerge.Add(lists[lists.Count - i]);
+                mergedLists.Add(ReversedMerge(listsToMerge));
 
-                mergedLists.Add(ReversedMerge(toMerge));
-
-                //mergedLists.Add(ReversedMerge(lists[lists.IndexOf(lists.SecondToLast()) - 1], lists.SecondToLast(),
-                //    lists.Last()));
-
-                for (int i = 0; i < width; i++)
+                for (var i = 0; i < width; i++)
                     lists.RemoveLast();
             }
 
             if (lists.Any())
             {
                 var zeros = lists.First().Select(s => 0).ToList();
-                mergedLists.Add(ReversedMerge(new List<List<int>> {zeros, lists.First()}));
+                mergedLists.Add(ReversedMerge(new List<List<int>> { zeros, lists.First() }));
             }
 
             return mergedLists;
+        }
+
+        private static List<List<int>> AddListsToMergeStarting(List<List<int>> lists, int width)
+        {
+            var toMerge = new List<List<int>>();
+
+            for (var i = 0; i <= width; i++)
+                toMerge.Add(lists[i]);
+
+            return toMerge;
+        }
+
+        private static List<List<int>> AddListsToMergeStartingAtTheEnd(List<List<int>> lists, int width)
+        {
+            var toMerge = new List<List<int>>();
+
+            for (var i = 1; i <= width; i++)
+                toMerge.Add(lists[lists.Count - i]);
+
+            return toMerge;
         }
 
         public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed_outside_in(
@@ -279,6 +300,19 @@ namespace Harvester.Domain
             return list;
         }
 
+        public static List<int> Merge(List<List<int>> lists)
+        {
+            var list = new List<int>();
+
+            for (var i = 0; i < lists.First().Count; i++)
+            {
+                foreach (var l in lists)
+                    list.Add(l[i]);
+            }
+
+            return list;
+        }
+
         public static List<int> Merge(List<int> first, List<int> second)
         {
             var list = new List<int>();
@@ -324,8 +358,10 @@ namespace Harvester.Domain
             var list = new List<int>();
 
             for (var i = 0; i < toMerge.First().Count; i++)
+            {
                 foreach (var m in toMerge)
                     list.Add(m[i]);
+            }
 
             return list;
         }
