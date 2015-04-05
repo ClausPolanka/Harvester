@@ -175,7 +175,7 @@ namespace Harvester.Domain
 
         public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in(this List<List<int>> lists)
         {
-            int width = 3;
+            int width = 3; // TODO pass as arg.
 
             var mergedLists = new List<List<int>>();
 
@@ -191,17 +191,17 @@ namespace Harvester.Domain
 
                 if (lists.Count < width) break;
 
-                mergedLists.Add(Merge(lists.First(), lists[1], lists[2]));
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
+                mergedLists.Add(Merge(ListsToMergeStartingAtTheBeginning(lists, width)));
+                
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
             }
 
             if (lists.Any())
             {
                 var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
                 var zeros = lists.Last().Select(s => 0).ToList();
-                mergedLists.Insert(middle, Merge(zeros, lists.SecondToLast(), lists.Last()));
+                mergedLists.Insert(middle, Merge(zeros, lists.SecondToLast(), lists.Last())); // TODO use for loop
             }
 
             return mergedLists;
@@ -232,7 +232,7 @@ namespace Harvester.Domain
             return mergedLists;
         }
 
-        private static List<List<int>> AddListsToMergeStarting(List<List<int>> lists, int width)
+        private static List<List<int>> ListsToMergeStartingAtTheBeginning(List<List<int>> lists, int width)
         {
             var toMerge = new List<List<int>>();
 
