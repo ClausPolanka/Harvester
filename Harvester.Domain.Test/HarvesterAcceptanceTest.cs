@@ -240,16 +240,6 @@ namespace Harvester.Domain.Test
         {
             var sut = new PlotHarvesterFactory(rows, cols, direction, width).Create(mode);
 
-            for (int i = 1; i <= (10 * 10); i++)
-            {
-                Console.Out.Write(i + " ");
-
-                if (i%10 ==0)
-                {
-                    Console.Out.WriteLine("");
-                }
-            }
-
             var actual = sut.Harvest(startRow, startCol);
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");

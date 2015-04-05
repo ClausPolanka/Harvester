@@ -19,7 +19,7 @@ namespace Harvester.Domain
             if (startCol == 1)
                 return new List<List<int>>(plotRows.Merge_two_rows_starting_top_left_reversed());
             else
-                return new List<List<int>>(plotRows.Merge_two_rows_starting_bottom_left_reversed());
+                return new List<List<int>>(plotRows.Merge_two_rows_starting_bottom_left_reversed(width));
         }
     }
 }
