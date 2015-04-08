@@ -312,7 +312,7 @@ namespace Harvester.Domain.UnitTest
             // 1* 2  3  4  5
             // 6  7  8  9 10
 
-            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "S", width: 2).Create();
+            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "S", width: 2).CreateWithZeros();
 
             var actual = sut.Harvest(startRow, startCol);
 
@@ -346,7 +346,7 @@ namespace Harvester.Domain.UnitTest
             // 6* 7  8  9 10
             // ↑  ↑
 
-            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "N", width: 2).Create();
+            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "N", width: 2).CreateWithZeros();
 
             var actual = sut.Harvest(startRow, startCol);
 
@@ -363,7 +363,7 @@ namespace Harvester.Domain.UnitTest
             // 6  7  8  9* 10
             //          ↑   ↑
             
-            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "N", width: 2).Create();
+            var sut = new PlotHarvesterFactory(rows: 2, cols: 5, direction: "N", width: 2).CreateWithZeros();
 
             var actual = sut.Harvest(startRow, startCol);
 

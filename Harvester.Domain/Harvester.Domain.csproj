@@ -41,12 +41,16 @@
   <ItemGroup>
     <Compile Include="CircularHarvester.cs" />
     <Compile Include="EastAndWestCircularPlotRowMerger.cs" />
+    <Compile Include="EastAndWestCircularPlotRowMergerWithZeros.cs" />
     <Compile Include="EastAndWestPlotRowMerger.cs" />
+    <Compile Include="EastAndWestSerpentinePlotRowMerger.cs" />
     <Compile Include="EastHarvester.cs" />
     <Compile Include="NorthAndSouthCircularPlotRowMerger.cs" />
+    <Compile Include="NorthAndSouthCircularPlotRowMergerWithZeros.cs" />
     <Compile Include="NorthAndSouthSerpentinePlotRowMerger.cs" />
+    <Compile Include="NorthAndSouthSerpentinePlotRowMergerWithZeros.cs" />
     <Compile Include="NorthHarvester.cs" />
-    <Compile Include="EastAndWestSerpentinePlotRowMerger.cs" />
+    <Compile Include="EastAndWestSerpentinePlotRowMergerWithZeros.cs" />
     <Compile Include="PlotRowMergerMode.cs" />
     <Compile Include="WestHarvester.cs" />
     <Compile Include="SouthHarvester.cs" />

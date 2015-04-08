@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Harvester.Domain
 {
@@ -11,7 +12,7 @@ namespace Harvester.Domain
             lists.ForEach(elem =>
             {
                 var i = lists.IndexOf(elem);
-                
+
                 if (i%2 == 1)
                     lists[i].Reverse();
             });
@@ -21,10 +22,10 @@ namespace Harvester.Domain
         {
             var longest = lists.Any() ? lists.Max(l => l.Count) : 0;
             var outer = new List<List<T>>(longest);
-            
+
             for (var i = 0; i < longest; i++)
                 outer.Add(new List<T>(lists.Count));
-            
+
             for (var j = 0; j < lists.Count; j++)
             {
                 for (var i = 0; i < longest; i++)
@@ -32,7 +33,7 @@ namespace Harvester.Domain
             }
             return outer;
         }
-        
+
         public static List<List<int>> Make_first_and_last_row_successors(this List<List<int>> lists)
         {
             var reordered = new List<List<int>>();
@@ -57,189 +58,540 @@ namespace Harvester.Domain
             return String.Join(" ", plotRows.SelectMany(row => row));
         }
 
-        public static List<List<int>> Merge_two_rows_starting_top_left(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_top_left(this List<List<int>> lists, int width)
         {
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 2)
+            while (lists.Count >= width)
             {
-                mergedLists.Add(Merge(lists.First(), lists[1], lists[2]));
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+            }
+
+            if (lists.Any())
+                mergedLists.Add(Merge(lists));
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_top_left_with_zeros(this List<List<int>> lists, int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
             }
 
             if (lists.Any())
             {
                 var zeros = lists.Last().Select(element => 0).ToList();
-                mergedLists.Add(Merge(lists.SecondToLast(), lists.Last(), zeros));
+                var toMerge = new List<List<int>>();
+
+                toMerge.AddRange(lists);
+
+                for (var i = 0; i < (width - lists.Count); i++)
+                    toMerge.Add(zeros);
+
+                mergedLists.Add(Merge(toMerge));
             }
 
             return mergedLists;
         }
-        
-        public static List<List<int>> Merge_two_rows_starting_top_left_outside_in(this List<List<int>> lists)
+
+        public static List<List<int>> Merge_two_rows_starting_top_left_outside_in_with_zeros(
+            this List<List<int>> lists,
+            int width)
         {
-            var capacity = (int) Math.Ceiling(lists.Count / 2.0);
+            var capacity = (int) Math.Ceiling(lists.Count/2.0);
             var mergedLists = new List<int>[capacity];
-            int startIndex = 0, endIndex = capacity-1;
-            
-            while (lists.Count > 1)
+            int startIndex = 0, endIndex = capacity - 1;
+
+            while (lists.Count >= width)
             {
-                mergedLists[startIndex++] = Merge(lists.First(), lists[1]);
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-                mergedLists[endIndex--] = Merge(lists.SecondToLast(), lists.Last());
-                lists.RemoveLast();
-                lists.RemoveLast();
-            }
+                var toMerge = new List<List<int>>();
 
-            if (lists.Any())
-            {
-                var middle = (int) Math.Ceiling(capacity / 2.0) - 1;
-                mergedLists[middle] = lists.Last();
-            }
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
 
-            return new List<List<int>>(mergedLists);
-        }
+                mergedLists[startIndex++] = Merge(toMerge);
 
-        public static List<List<int>> Merge_two_rows_starting_top_left_reversed(this List<List<int>> lists)
-        {
-            var mergedLists = new List<List<int>>();
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
 
-            while (lists.Count > 1)
-            {
-                mergedLists.Add(ReversedMerge(lists.First(), lists[1]));
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-            }
+                toMerge = new List<List<int>>();
 
-            if (lists.Any()) mergedLists.Add(lists.Last());
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
 
-            return mergedLists;
-        }
+                toMerge.Reverse();
 
-        public static List<List<int>> Merge_two_rows_starting_top_left_reversed_outside_in(this List<List<int>> lists)
-        {
-            var capacity = (int) Math.Ceiling(lists.Count / 3.0);
-            var mergedLists = new List<int>[capacity];
-            int startIndex = 0, endIndex = capacity-1;
-            
-            while (lists.Count > 2)
-            {
-                mergedLists[startIndex++] = ReversedMerge(lists.First(), lists[1], lists[2]);
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
+                mergedLists[endIndex--] = Merge(toMerge);
 
-                if (lists.Count <= 2)
-                    break;
-
-                mergedLists[endIndex--] = ReversedMerge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last());
-                lists.RemoveLast();
-                lists.RemoveLast();
-                lists.RemoveLast();
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
             }
 
             if (lists.Any())
             {
                 var middle = (int) Math.Ceiling(capacity/2.0) - 1;
-                var zeros = lists.Last().Select(s => 0).ToList();
-                mergedLists[middle] = ReversedMerge(zeros, lists.Last());
+                var zeros = lists.First().Select(s => 0).ToList();
+                var toMerge = new List<List<int>>();
+
+                toMerge.AddRange(lists);
+
+                for (var i = 0; i < (width - lists.Count); i++)
+                    toMerge.Add(zeros);
+
+                mergedLists[middle] = Merge(toMerge);
             }
 
             return new List<List<int>>(mergedLists);
         }
 
-        public static List<List<int>> Merge_two_rows_starting_bottom_left(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_top_left_outside_in(this List<List<int>> lists, int width)
         {
-            var mergedLists = new List<List<int>>();
+            var capacity = (int) Math.Ceiling(lists.Count/2.0);
+            var mergedLists = new List<int>[capacity];
+            int startIndex = 0, endIndex = capacity - 1;
 
-            while (lists.Count > 2)
+            while (lists.Count >= width)
             {
-                mergedLists.Add(Merge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last()));
-                lists.RemoveLast();
-                lists.RemoveLast();
-                lists.RemoveLast();
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                mergedLists[startIndex++] = Merge(toMerge);
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                toMerge.Reverse();
+
+                mergedLists[endIndex--] = Merge(toMerge);
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
             }
 
             if (lists.Any())
             {
-                var zeros = lists.First().Select(s => 0).ToList();
-                mergedLists.Add(Merge(zeros, zeros, lists.First()));
+                var middle = (int) Math.Ceiling(capacity/2.0) - 1;
+                mergedLists[middle] = Merge(lists);
+            }
+
+            return new List<List<int>>(mergedLists);
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_top_left_reversed(this List<List<int>> lists, int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+            }
+
+            if (lists.Any())
+            {
+                lists.Reverse();
+                mergedLists.Add(Merge(lists));
             }
 
             return mergedLists;
         }
 
-        public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_top_left_reversed_outside_in_with_zeros(
+            this List<List<int>> lists,
+            int width)
+        {
+            var capacity = (int) Math.Ceiling(lists.Count/(double) width);
+            var mergedLists = new List<int>[capacity];
+            int startIndex = 0, endIndex = capacity - 1;
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                toMerge.Reverse();
+
+                mergedLists[startIndex++] = Merge(toMerge);
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+
+                if (lists.Count <= (width - 1))
+                    break;
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                mergedLists[endIndex--] = Merge(toMerge);
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(capacity/2.0) - 1;
+                var zeros = lists.First().Select(s => 0).ToList();
+                var toMerge = new List<List<int>>();
+
+                toMerge.AddRange(lists);
+
+                for (var i = 0; i < (width - lists.Count); i++)
+                    toMerge.Add(zeros);
+
+                mergedLists[middle] = Merge(toMerge);
+            }
+
+            return new List<List<int>>(mergedLists);
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_top_left_reversed_outside_in(
+            this List<List<int>> lists,
+            int width)
+        {
+            var capacity = (int) Math.Ceiling(lists.Count/(double) width);
+            var mergedLists = new List<int>[capacity];
+            int startIndex = 0, endIndex = capacity - 1;
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                toMerge.Reverse();
+
+                mergedLists[startIndex++] = Merge(toMerge);
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+
+                if (lists.Count <= (width - 1))
+                    break;
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                mergedLists[endIndex--] = Merge(toMerge);
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(capacity/2.0) - 1;
+                mergedLists[middle] = Merge(lists);
+            }
+
+            return new List<List<int>>(mergedLists);
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_with_zeros(
+            this List<List<int>> lists,
+            int width)
         {
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 2)
+            while (lists.Count >= width)
             {
-                mergedLists.Add(Merge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last()));
-                lists.RemoveLast();
-                lists.RemoveLast();
-                lists.RemoveLast();
+                var toMerge = new List<List<int>>();
 
-                if (lists.Count <= 2) break;
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+            }
+
+            if (lists.Any())
+            {
+                var zeros = lists.First().Select(s => 0).ToList();
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < (width - lists.Count); i++)
+                    toMerge.Add(zeros);
+
+                toMerge.AddRange(lists);
+
+                mergedLists.Add(Merge(toMerge));
+            }
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left(this List<List<int>> lists, int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+            }
+
+            if (lists.Any())
+                mergedLists.Add(Merge(lists));
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in(
+            this List<List<int>> lists,
+            int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+
+                if (lists.Count <= (width - 1)) break;
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
+                mergedLists.Insert(middle, Merge(lists));
+            }
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_outside_in_with_zeros(
+            this List<List<int>> lists,
+            int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+
+                if (lists.Count <= (width - 1)) break;
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
+                var zeros = lists.First().Select(s => 0).ToList();
+                var toMerge = new List<List<int>>();
+                toMerge.AddRange(lists);
                 
-                mergedLists.Add(Merge(lists.First(), lists[1], lists[2]));
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-            }
-
-            if (lists.Any())
-            {
-                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
-                var zeros = lists.Last().Select(s => 0).ToList();
-                mergedLists.Insert(middle, Merge(zeros, lists.SecondToLast(), lists.Last()));
+                for (var i = 0; i < (width - lists.Count); i++)
+                    toMerge.Add(zeros);
+                
+                
+                mergedLists.Insert(middle, Merge(toMerge));
             }
 
             return mergedLists;
         }
 
-        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed(this List<List<int>> lists)
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed(
+            this List<List<int>> lists,
+            int width)
         {
             var mergedLists = new List<List<int>>();
 
-            while (lists.Count > 2)
+            while (lists.Count >= width)
             {
-                mergedLists.Add(ReversedMerge(lists[lists.IndexOf(lists.SecondToLast())-1], lists.SecondToLast(), lists.Last()));
-                lists.RemoveLast();
-                lists.RemoveLast();
-                lists.RemoveLast();
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+            }
+
+            if (lists.Any())
+                mergedLists.Add(Merge(lists));
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed_outside_in(
+            this List<List<int>> lists,
+            int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
             }
 
             if (lists.Any())
             {
+                var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
+                mergedLists.Insert(middle, Merge(lists));
+            }
+
+            return mergedLists;
+        }
+
+        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed_outside_in_with_zeros(
+            this List<List<int>> lists,
+            int width)
+        {
+            var mergedLists = new List<List<int>>();
+
+            while (lists.Count >= width)
+            {
+                var toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[(lists.Count - 1) - i]);
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveLast();
+
+                toMerge = new List<List<int>>();
+
+                for (var i = 0; i < width; i++)
+                    toMerge.Add(lists[i]);
+
+                toMerge.Reverse();
+
+                mergedLists.Add(Merge(toMerge));
+
+                for (var i = 0; i < width; i++)
+                    lists.RemoveAt(0);
+            }
+
+            if (lists.Any())
+            {
+                var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
                 var zeros = lists.First().Select(s => 0).ToList();
-                mergedLists.Add(ReversedMerge(zeros, lists.First()));
-            }
+                var toMerge = new List<List<int>>();
 
-            return mergedLists;
-        }
+                toMerge.AddRange(lists);
 
-        public static List<List<int>> Merge_two_rows_starting_bottom_left_reversed_outside_in(this List<List<int>> lists)
-        {
-            var mergedLists = new List<List<int>>();
+                for (var i = 0; i < (width - lists.Count); i++)
+                    toMerge.Add(zeros);
 
-            while (lists.Count > 1)
-            {
-                mergedLists.Add(ReversedMerge(lists.SecondToLast(), lists.Last()));
-                lists.RemoveLast();
-                lists.RemoveLast();
-                mergedLists.Add(ReversedMerge(lists.First(), lists[1]));
-                lists.RemoveAt(0);
-                lists.RemoveAt(0);
-            }
-
-            if (lists.Any())
-            {
-                var middle = (int) Math.Ceiling(mergedLists.Count / 2.0);
-                mergedLists.Insert(middle, lists.Last());
+                mergedLists.Insert(middle, Merge(toMerge));
             }
 
             return mergedLists;
@@ -269,6 +621,16 @@ namespace Harvester.Domain
             return list;
         }
 
+        public static List<int> Merge(List<List<int>> lists)
+        {
+            var list = new List<int>();
+
+            for (var i = 0; i < lists.First().Count; i++)
+                list.AddRange(lists.Select(l => l[i]));
+
+            return list;
+        }
+
         public static List<int> Merge(List<int> first, List<int> second)
         {
             var list = new List<int>();
@@ -294,7 +656,7 @@ namespace Harvester.Domain
 
             return list;
         }
-        
+
         public static List<int> ReversedMerge(List<int> first, List<int> second, List<int> third)
         {
             var list = new List<int>();

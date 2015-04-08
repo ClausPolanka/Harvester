@@ -32,11 +32,26 @@ namespace Harvester.Domain
 
         }
 
+        public HarvesterDirection CreateWithZeros(string mode = SERPENTINE)
+        {
+            if (mode == CIRCULAR)
+                return CreateCircularWithZeros(rows, cols, direction);
+            else
+                return CreateSerpentineWithZeros(rows, cols, direction);
+
+        }
+
         public HarvesterDirection CreateCircular()
         {
             return CreateCircular(rows, cols, direction);
         }
 
+        public HarvesterDirection CreateCircularWithZeros()
+        {
+            return CreateCircularWithZeros(rows, cols, direction);
+        }
+
+        // TODO Change to without zeros.
         public HarvesterDirection CreateCircular(int nrOfRows, int nrOfCols, string direction)
         {
             if (direction == SOUTH)
@@ -73,6 +88,42 @@ namespace Harvester.Domain
                 plotRowMerger: new EastAndWestCircularPlotRowMerger(width));
         }
 
+        public HarvesterDirection CreateCircularWithZeros(int nrOfRows, int nrOfCols, string direction)
+        {
+            if (direction == SOUTH)
+            {
+                return new SouthHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    harvesterMode: new CircularHarvester(), 
+                    plotRowMerger: new NorthAndSouthCircularPlotRowMergerWithZeros(width));
+                
+            }
+            if (direction == NORTH)
+            {
+                return new NorthHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    generalHarvester: new CircularHarvester(), 
+                    plotRowMerger: new NorthAndSouthCircularPlotRowMergerWithZeros(width));
+                
+            }
+            if (direction == WEST)
+            {
+                return new WestHarvester(
+                    nrOfRows, 
+                    nrOfCols, 
+                    harvesterMode: new CircularHarvester(), 
+                    plotRowMerger: new EastAndWestCircularPlotRowMergerWithZeros(width));
+                
+            }
+            return new EastHarvester(
+                nrOfRows, 
+                nrOfCols, 
+                harvesterMode: new CircularHarvester(), 
+                plotRowMerger: new EastAndWestCircularPlotRowMergerWithZeros(width));
+        }
+
         public HarvesterDirection CreateSerpentine(int nrOfRows, int nrOfCols, string direction)
         {
             if (direction == SOUTH)
@@ -104,6 +155,40 @@ namespace Harvester.Domain
                 nrOfCols,
                 harvesterMode: new SerpentineHarvester(), 
                 plotRowMerger: new EastAndWestSerpentinePlotRowMerger(width));
+            
+        }
+
+        public HarvesterDirection CreateSerpentineWithZeros(int nrOfRows, int nrOfCols, string direction)
+        {
+            if (direction == SOUTH)
+            {
+                return new SouthHarvester(
+                    nrOfRows, 
+                    nrOfCols,
+                    harvesterMode: new SerpentineHarvester(), 
+                    plotRowMerger: new NorthAndSouthSerpentinePlotRowMergerWithZeros(width));
+            }
+            if (direction == NORTH)
+            {
+                return new NorthHarvester(
+                    nrOfRows, 
+                    nrOfCols,
+                    generalHarvester: new SerpentineHarvester(), 
+                    plotRowMerger: new NorthAndSouthSerpentinePlotRowMergerWithZeros(width));
+            }
+            if (direction == WEST)
+            {
+                return new WestHarvester(
+                    nrOfRows, 
+                    nrOfCols,
+                    harvesterMode: new SerpentineHarvester(),
+                    plotRowMerger: new EastAndWestSerpentinePlotRowMergerWithZeros(width));
+            }
+            return new EastHarvester(
+                nrOfRows,
+                nrOfCols,
+                harvesterMode: new SerpentineHarvester(), 
+                plotRowMerger: new EastAndWestSerpentinePlotRowMergerWithZeros(width));
             
         }
     }

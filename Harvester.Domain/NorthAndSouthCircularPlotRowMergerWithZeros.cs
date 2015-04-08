@@ -3,11 +3,11 @@
 namespace Harvester.Domain
 {
  
-    public class NorthAndSouthCircularPlotRowMerger : PlotRowMergerMode
+    public class NorthAndSouthCircularPlotRowMergerWithZeros : PlotRowMergerMode
     {
         private readonly int width;
 
-        public NorthAndSouthCircularPlotRowMerger(int width)
+        public NorthAndSouthCircularPlotRowMergerWithZeros(int width)
         {
             this.width = width;
         }
@@ -18,9 +18,9 @@ namespace Harvester.Domain
                 return new List<List<int>>(plotRows);
 
             if (startCol == 1)
-                return new List<List<int>>(plotRows.Merge_two_rows_starting_top_left_reversed_outside_in(width));
+                return new List<List<int>>(plotRows.Merge_two_rows_starting_top_left_reversed_outside_in_with_zeros(width));
             else
-                return new List<List<int>>(plotRows.Merge_two_rows_starting_bottom_left_reversed_outside_in(width));
+                return new List<List<int>>(plotRows.Merge_two_rows_starting_bottom_left_reversed_outside_in_with_zeros(width));
         }
     }
 }
