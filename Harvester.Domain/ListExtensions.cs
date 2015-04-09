@@ -118,7 +118,7 @@ namespace Harvester.Domain
             this List<List<int>> lists,
             int width)
         {
-            var capacity = (int) Math.Ceiling(lists.Count/2.0);
+            var capacity = (int) Math.Ceiling(lists.Count/(double) width);
             var mergedLists = new List<int>[capacity];
             int startIndex = 0, endIndex = capacity - 1;
 
@@ -133,6 +133,9 @@ namespace Harvester.Domain
 
                 for (var i = 0; i < width; i++)
                     lists.RemoveAt(0);
+
+                if (lists.Count <= width)
+                    break;
 
                 toMerge = new List<List<int>>();
 
@@ -166,7 +169,7 @@ namespace Harvester.Domain
 
         public static List<List<int>> Merge_two_rows_starting_top_left_outside_in(this List<List<int>> lists, int width)
         {
-            var capacity = (int) Math.Ceiling(lists.Count/2.0);
+            var capacity = (int) Math.Ceiling(lists.Count/(double) width);
             var mergedLists = new List<int>[capacity];
             int startIndex = 0, endIndex = capacity - 1;
 
@@ -472,12 +475,12 @@ namespace Harvester.Domain
                 var middle = (int) Math.Ceiling(mergedLists.Count/2.0);
                 var zeros = lists.First().Select(s => 0).ToList();
                 var toMerge = new List<List<int>>();
-                toMerge.AddRange(lists);
-                
+
                 for (var i = 0; i < (width - lists.Count); i++)
                     toMerge.Add(zeros);
-                
-                
+
+                toMerge.AddRange(lists);
+
                 mergedLists.Insert(middle, Merge(toMerge));
             }
 
