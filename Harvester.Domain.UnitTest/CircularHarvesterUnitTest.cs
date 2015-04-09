@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -202,6 +203,47 @@ namespace Harvester.Domain.UnitTest
             var actual = sut.Harvest(startRow, startCol);
 
             Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        //  1   2  3  4       
+        //  5   6  7  8        8  4  7  3  6  2  5  1              13 17 14 18 15 19 16 20
+        //  9  10 11 12        0  9  0 10  0 11  0 12               8  4  7  3  6  2  5  1
+        // 13* 14 15 16       13 17 14 18 15 19 16 20               0  9  0 10  0 11  0 12
+        // 17  18 19 20
+        [TestCase(5, 4, 4, 1, 2, "O", "13 17 14 18 15 19 16 20 8 4 7 3 6 2 5 1 9 0 10 0 11 0 12 0")]
+        
+        //  1   2  3  4 
+        //  5   6  7  8       0  1  5  0  2  6  0  3  7  0  4  8
+        //  9* 10 11 12       9 13 17 10 14 18 11 15 19 12 16 20
+        // 13  14 15 16 
+        // 17  18 19 20
+        [TestCase(5, 4, 3, 1, 3, "O", "9 13 17 10 14 18 11 15 19 12 16 20 8 4 0 7 3 0 6 2 0 5 1 0")]
+        public void With_Zerso(
+            int nrOfRows,
+            int nrOfCols,
+            int startRow,
+            int startCol,
+            int width,
+            string direction,
+            string expected)
+        {
+            debug(nrOfRows, nrOfCols);
+            var sut = new PlotHarvesterFactory(nrOfRows, nrOfCols, direction, width).CreateCircularWithZeros();
+
+            var actual = sut.Harvest(startRow, startCol);
+
+            Assert.That(actual, Is.EqualTo(expected), "plot numbers");
+        }
+
+        private static void debug(int rows, int cols)
+        {
+            for (int i = 1; i <= (rows*cols); i++)
+            {
+                Console.Out.Write(i + " ");
+
+                if (i%cols == 0)
+                    Console.Out.WriteLine("");
+            }
         }
 
     }

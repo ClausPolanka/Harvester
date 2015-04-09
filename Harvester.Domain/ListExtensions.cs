@@ -41,12 +41,12 @@ namespace Harvester.Domain
             while (lists.Any())
             {
                 reordered.Add(lists.First().ToList());
-                lists.RemoveAt(lists.IndexOf(lists.First()));
+                lists.RemoveAt(0);
 
                 if (lists.Count > 1)
                 {
                     reordered.Add(lists.Last().ToList());
-                    lists.RemoveAt(lists.IndexOf(lists.Last()));
+                    lists.RemoveLast();
                 }
             }
 
@@ -442,7 +442,7 @@ namespace Harvester.Domain
             int width)
         {
             var mergedLists = new List<List<int>>();
-
+            var comingFromEast = false;
             while (lists.Count >= width)
             {
                 var toMerge = new List<List<int>>();
@@ -457,7 +457,7 @@ namespace Harvester.Domain
                 for (var i = 0; i < width; i++)
                     lists.RemoveLast();
 
-                if (lists.Count <= (width - 1)) break;
+                if (lists.Count < width) break;
 
                 toMerge = new List<List<int>>();
 
@@ -468,6 +468,8 @@ namespace Harvester.Domain
 
                 for (var i = 0; i < width; i++)
                     lists.RemoveAt(0);
+
+                comingFromEast = true;
             }
 
             if (lists.Any())
@@ -480,6 +482,9 @@ namespace Harvester.Domain
                     toMerge.Add(zeros);
 
                 toMerge.AddRange(lists);
+
+                if (comingFromEast)
+                    toMerge.Reverse();
 
                 mergedLists.Insert(middle, Merge(toMerge));
             }
